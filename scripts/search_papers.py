@@ -316,6 +316,32 @@ def _doi_url(p):
     return f"https://doi.org/{d}" if d else None
 
 
+def render_compact(papers, query):
+    """One numbered line per paper — scannable for large result sets, and the
+    number is how the user refers back ('deep-read #3')."""
+    if not papers:
+        return f"## 🔎 No results for: {query}\n\nTry broader terms or fewer filters."
+    n = len(papers)
+    out = [f"## 🔎 {n} results for: {query}",
+           f"*All {n}, numbered 1–{n}. Show the whole list; the user refers to any "
+           f"paper by its number (e.g. \"deep-read #3\").*", ""]
+    for i, p in enumerate(papers, 1):
+        title = (p.get("title") or "Untitled").strip()
+        link = _doi_url(p) or p.get("url") or p.get("pdf_url")
+        head = f"[{title}]({link})" if link else title
+        authors = p.get("authors") or []
+        who = (authors[0] + " et al." if len(authors) > 1 else (authors[0] if authors else ""))
+        bits = [x for x in [who, str(p.get("year") or ""),
+                            f"cited {p.get('citation_count', 0)}",
+                            "🟢" if p.get("pdf_url") else "🔒"] if x]
+        line = f"{i}. **{head}** — " + " · ".join(bits)
+        if p.get("pdf_url"):
+            line += f" · [PDF]({p['pdf_url']})"
+        out.append(line)
+    out.append(f"\n— end of {n} results —")
+    return "\n".join(out)
+
+
 def render_markdown(papers, query):
     """Fixed, self-contained Markdown so the result looks identical no matter
     which model relays it. Each paper = a card with title, full metadata, an
@@ -324,7 +350,8 @@ def render_markdown(papers, query):
         return f"## 🔎 No results for: {query}\n\nTry broader terms or fewer filters."
     n = len(papers)
     out = [f"## 🔎 {n} results for: {query}",
-           f"*Showing all {n} — present every card below, do not truncate.*", ""]
+           f"*All {n} results, numbered 1–{n}. Show every card as one flat list — "
+           f"don't truncate or regroup; the user refers to papers by number.*", ""]
     for i, p in enumerate(papers, 1):
         title = (p.get("title") or "Untitled").strip()
         primary = _doi_url(p) or p.get("url") or p.get("pdf_url")
@@ -379,6 +406,10 @@ def main():
                          "+ clickable links to the original / PDF / DOI. This is the "
                          "fixed user-facing format — identical no matter which model "
                          "relays it.")
+    ap.add_argument("--compact", action="store_true",
+                    help="Print a numbered one-line-per-paper list (title link + "
+                         "authors/year/citations/OA + PDF). Best for scanning many "
+                         "results and referring to a paper by its number.")
     args = ap.parse_args()
 
     requested = [s.strip() for s in args.sources.split(",") if s.strip()]
@@ -431,6 +462,10 @@ def main():
         note = "; ".join(_why(s, m) for s, m in errors.items())
         sys.stderr.write(f"note: {len(errors)}/{len(chosen)} source(s) skipped "
                          f"({note}); results came from the other {len(chosen)-len(errors)}.\n")
+
+    if args.compact:
+        print(render_compact(papers, args.query))
+        return
 
     if args.markdown:
         print(render_markdown(papers, args.query))

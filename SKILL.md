@@ -58,19 +58,22 @@ asks what the research says about something.
    Semantic Scholar, Europe PMC — deduped and rule-scored):
 
    ```bash
-   python scripts/search_papers.py "your query" --limit 40 --markdown
-   #   --markdown : ready-to-show result cards with clickable links (USE THIS to
-   #                present results — see the fixed format below)
-   #   --brief    : compact ranked table, for your own quick skim
-   #   (omit both): full JSON records with abstracts, for re-ranking / writing
+   python scripts/search_papers.py "your query" --limit 40 --compact
+   #   --compact  : numbered one-line-per-paper list — USE THIS when the count is
+   #                large (~25+) so the whole list is scannable and fully shown
+   #   --markdown : richer cards (title + abstract + links) — good for smaller
+   #                sets or when the user wants detail
+   #   --brief    : plain table, for your own quick skim
+   #   (omit all) : full JSON records with abstracts, for re-ranking / writing
    # filters:  --from-year 2021 --to-year 2026  --open-access-only
    # sources:  --sources openalex,crossref,arxiv,s2,europepmc
    ```
-4. **Present with the fixed `--markdown` format.** For any "find / list papers"
-   request, run `--markdown` and **show its output to the user as-is** — do not
-   restyle it. The script (not the model) produces the layout, so the result
-   looks identical no matter which model runs the skill. Each paper is rendered
-   as a card:
+4. **Present the full numbered list.** Pick the format by size: **`--compact`**
+   for large counts (the user's 200 → a clean 1…N list they can scan), or
+   **`--markdown`** cards for smaller/detailed sets. Either way, **show the
+   script's output as-is** — the script (not the model) produces the layout, so it
+   is identical no matter which model runs the skill. A `--markdown` card looks
+   like:
 
    > ### 1. [Paper title](https://doi.org/…)  ← title links to the original
    > Authors  ·  Year  ·  *Venue*  ·  cited by N  ·  via Source  ·  🟢 Open Access
@@ -80,19 +83,28 @@ asks what the research says about something.
    Every card carries **clickable links that jump straight to the original paper,
    its open-access PDF, and its DOI** — keep them intact.
 
-   **Output EVERY card — never truncate.** If the user chose 30, run `--limit 30`
-   and show all 30 cards, in full, through the `— end of N results —` marker. Do
-   NOT stop early, summarise the rest, collapse cards into a list, or replace any
-   with "…". The count the user picked is a hard contract: deliver exactly that
-   many cards (or fewer only if the databases genuinely returned fewer — then say
-   so). A long reply is expected and fine.
-5. **Re-rank by research fit, not keyword overlap.** `rule_score` is only a
-   keyword/recency/citation prior — the genuinely best-fit paper is often NOT
-   first. When the user wants a curated answer, judge fit per
-   `references/search.md`, reorder the cards, and (only if asked to filter) drop
-   off-target hits — otherwise keep the full count. Present each kept paper as its
-   `--markdown` card (title link + details + links); you may add a one-line "why".
-   Papers with a `pdf_url` are open-access and can be deep-read next.
+   **Hard output rules (do not override these for "helpfulness"):**
+   - **Show ALL N cards.** Paste the `--markdown` output in full, from card 1
+     through the `— end of N results —` line. If the user asked for 200 and the
+     databases returned 169, list all 169. Never stop early, never show only
+     "highlights" or "the most representative", never collapse the rest into "…
+     and more".
+   - **One flat numbered list, 1…N.** Do NOT reorganise into themes, categories,
+     sections, or sub-numbered buckets. Keep the script's single continuous
+     `1, 2, 3 … N` numbering — that exact number is how the user refers back
+     ("deep-read #3", "summarise #7, #12"), so it must be a flat sequence with no
+     gaps or restarts.
+   - **Don't shorten cards.** Keep each card's metadata + links. You may add at
+     most a one-line "why" under a card.
+   - A long reply is expected when the count is large — that is what the user
+     asked for. You may add ONE line *after* the full list offering to narrow,
+     group, or deep-read a number — never *instead of* the full list.
+5. **Ordering, not culling.** "Re-rank by fit" means choosing the *order*, never
+   removing papers. Apply the user's **Sort** choice by reordering the whole set,
+   then number it 1…N (see `references/search.md` for fit criteria; `rule_score`
+   is only a prior). Drop papers ONLY if the user explicitly asked to filter
+   (e.g. "open access only", "exclude reviews"); otherwise keep all N. Papers with
+   a `pdf_url` are open-access and can be deep-read by number next.
 
 The script auto-retries Semantic Scholar on rate-limit (HTTP 429), which clears
 most skips. If `s2` still gets skipped a lot, set a free key —
