@@ -21,13 +21,13 @@
 ---
 
 > ### 🪶 这是 [**AcademiCats**](https://academicats.com) 的**开源轻量版**（正式版现处公测，免费试用）
-> 完整产品在 **[academicats.com](https://academicats.com)** —— 一个 AI 研究工作台，带你从*找文献*一路走到*读、写、自审*：拥有 Google Scholar 级广度、中文文献源、文献库保存、精致界面和多智能体审稿。本 skill 是这套工作流中一块免费、自包含、可在你自己的 Claude 上运行的切片。
+> 完整产品在 **[academicats.com](https://academicats.com)** —— 一个 AI 研究工作台，带你从*找文献*一路走到*读、写、自审*：覆盖广度堪比 Google Scholar、支持中文文献、可保存文献库、界面精致，还带多智能体审稿。本 skill 把这套工作流里的检索部分免费开源，自包含、可直接在你自己的 Claude 上运行。
 
 ---
 
 ## ✨ 它能做什么
 
-🔍 **真正管用的检索** —— 一个问题同时扇出到五大学术库（OpenAlex、Crossref、arXiv、Semantic Scholar、Europe PMC），去重，并按**真实研究契合度**排序，而不只是关键词重叠。
+🔍 **真正管用的检索** —— 一次同时查遍五大学术库（OpenAlex、Crossref、arXiv、Semantic Scholar、Europe PMC），自动去重，再按**真实研究契合度**排序——而不是只看关键词重不重合。
 
 📄 **精读，而非略读** —— 任选一篇开放获取论文，它会解析 PDF、抽取正文，给你一份结构化、**逐条标注页码**的精读：研究问题、方法、核心发现、局限。
 
@@ -52,7 +52,7 @@
 >
 > 回复任何修改，或直接说 **go**。
 
-确认后它真实地跑一次检索，返回一份**带编号的结果列表**——每篇一行、可扫描，你能直接按序号操作。格式由工具固定生成，**换任何大模型跑都长一个样**：
+确认后它就真的去检索，返回一份**带编号的结果列表**——每篇一行、方便扫读，你可以直接用序号操作。格式由脚本固定生成，**换任何大模型来跑都完全一致**：
 
 > ## 🔎 共 5 条结果：CRISPR off-target effects
 > 1. **[Off-target effects in CRISPR/Cas9 gene editing](https://doi.org/10.3389/fbioe.2023.1143157)** — Congting Guo et al. · 2023 · 被引 537 · 🟢 · [PDF](https://www.frontiersin.org/articles/10.3389/fbioe.2023.1143157/pdf)
@@ -61,7 +61,7 @@
 > 4. **[CRISPR/Cas13 effectors have differing off-target effects in eukaryotic cells](https://doi.org/10.1093/nar/gkac159)** — Ai et al. · 2022 · 被引 151 · 🔒
 > 5. **[Beyond the promise: evaluating & mitigating off-target effects for safer therapeutics](https://doi.org/10.3389/fbioe.2023.1339189)** — Lopes et al. · 2024 · 被引 62 · 🟢
 
-标题直接链接原文；🟢 表示有可读全文的免费 PDF。然后你只要说 **"深读 #1"**——它就打开那篇的 PDF，把发现逐条标注页码读给你听，完全基于论文自身的正文。
+标题直接链接原文；🟢 表示有可读全文的免费 PDF。然后你只要说 **"深读 #1"**——它就打开那篇的 PDF，逐条列出关键发现并标注出处页码，且完全基于论文原文。
 
 <br>
 
@@ -90,7 +90,7 @@ cd ~/.claude/skills/paper-search && python -m pip install -r scripts/requirement
 | 真实论文、诚实精读 | ✅ | ✅ |
 | 学术数据库 | 5 个（免 key） | 14+，含 Google Scholar 与中文源 |
 | 文献库保存与历史 | — | ✅ |
-| 据文献写作与自审 | — | ✅ Synthesis Lab + Paper Review |
+| 据文献写作、自审稿 | — | ✅ Synthesis Lab + Paper Review |
 | 精致的网页与移动端 | — | ✅ |
 
 ## 🐱 AcademiCats 技能家族
@@ -98,7 +98,7 @@ cd ~/.claude/skills/paper-search && python -m pip install -r scripts/requirement
 三个开源 skill，串起一条完整的研究工作流——按需安装其一或全部：
 
 - 🔍 **论文检索** *（你在这里）* —— 找文献、读文献
-- ✍️ [文献写作台](https://github.com/jy1529098645-gif/Cat_synthesis_lab) —— 据你的文献写出有据成稿
+- ✍️ [文献写作台](https://github.com/jy1529098645-gif/Cat_synthesis_lab) —— 用你的文献写出有据可查的成稿
 - 🧪 [模拟同行评审](https://github.com/jy1529098645-gif/Cat_paper_review) —— 对你自己的草稿做同行评审
 
 **一次装齐三个** —— clone 任意一个仓库后运行 `bash install.sh`。

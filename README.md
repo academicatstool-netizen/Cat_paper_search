@@ -27,7 +27,7 @@
 
 ## ✨ What it does
 
-🔍 **Search that means it** — one question fans out across five scholarly databases (OpenAlex, Crossref, arXiv, Semantic Scholar, Europe PMC), de-duplicates, and ranks by genuine research fit — not just keyword overlap.
+🔍 **Search that means it** — one question searches five scholarly databases at once (OpenAlex, Crossref, arXiv, Semantic Scholar, Europe PMC), de-duplicates, and ranks by genuine research fit — not just keyword overlap.
 
 📄 **Read, not skim** — pick any open-access paper and it resolves the PDF, extracts the text, and gives you a structured, page-anchored reading: the research question, method, key findings, and limitations.
 
