@@ -25,9 +25,11 @@ import argparse
 import concurrent.futures as cf
 import json
 import math
+import os
 import re
 import sys
 import ssl
+import time
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -47,16 +49,27 @@ except Exception:
 _CTX_UNVERIFIED = ssl._create_unverified_context()
 
 
-def _get(url, headers=None):
+def _get(url, headers=None, retries=3):
+    """GET with a short backoff retry on rate-limit / transient 5xx (fixes the
+    common Semantic Scholar 429 when running key-free). Timeouts are NOT retried
+    (they're slow) — a dead source just drops and the others carry the search."""
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, **(headers or {})})
-    try:
-        with urllib.request.urlopen(req, timeout=TIMEOUT, context=_CTX) as resp:
-            return resp.read()
-    except urllib.error.URLError as e:
-        if isinstance(getattr(e, "reason", None), ssl.SSLError):
-            with urllib.request.urlopen(req, timeout=TIMEOUT, context=_CTX_UNVERIFIED) as resp:
+    for attempt in range(retries):
+        try:
+            with urllib.request.urlopen(req, timeout=TIMEOUT, context=_CTX) as resp:
                 return resp.read()
-        raise
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 500, 502, 503, 504) and attempt < retries - 1:
+                # honour Retry-After if present, else exponential-ish backoff
+                wait = e.headers.get("Retry-After")
+                time.sleep(min(float(wait), 6) if (wait and wait.isdigit()) else 1.2 * (attempt + 1))
+                continue
+            raise
+        except urllib.error.URLError as e:
+            if isinstance(getattr(e, "reason", None), ssl.SSLError):
+                with urllib.request.urlopen(req, timeout=TIMEOUT, context=_CTX_UNVERIFIED) as resp:
+                    return resp.read()
+            raise
 
 
 def _get_json(url, headers=None):
@@ -162,8 +175,12 @@ def search_s2(q, limit):
     fields = "title,abstract,year,authors,externalIds,openAccessPdf,citationCount,venue,url"
     url = ("https://api.semanticscholar.org/graph/v1/paper/search?query=" +
            urllib.parse.quote(q) + f"&limit={min(limit, 40)}&fields={fields}")
+    # An optional free API key (https://www.semanticscholar.org/product/api) lifts
+    # the rate limit dramatically — set S2_API_KEY to stop the 429 skips.
+    key = os.environ.get("S2_API_KEY") or os.environ.get("SEMANTIC_SCHOLAR_API_KEY")
+    headers = {"x-api-key": key} if key else None
     out = []
-    for w in _get_json(url).get("data", []) or []:
+    for w in _get_json(url, headers).get("data", []) or []:
         ext = w.get("externalIds") or {}
         out.append({
             "title": _clean(w.get("title")),
@@ -305,7 +322,9 @@ def render_markdown(papers, query):
     abstract, and clickable links straight to the original / PDF / DOI."""
     if not papers:
         return f"## 🔎 No results for: {query}\n\nTry broader terms or fewer filters."
-    out = [f"## 🔎 {len(papers)} results for: {query}", ""]
+    n = len(papers)
+    out = [f"## 🔎 {n} results for: {query}",
+           f"*Showing all {n} — present every card below, do not truncate.*", ""]
     for i, p in enumerate(papers, 1):
         title = (p.get("title") or "Untitled").strip()
         primary = _doi_url(p) or p.get("url") or p.get("pdf_url")
@@ -339,6 +358,7 @@ def render_markdown(papers, query):
             out.append("")
             out.append(" · ".join(links))
         out.append("")
+    out.append(f"— end of {n} results —")
     return "\n".join(out)
 
 
@@ -402,9 +422,15 @@ def main():
     papers = papers[:args.limit]
 
     if errors:
-        note = ", ".join(f"{s} unavailable" for s in errors)
+        def _why(s, msg):
+            if s == "s2" and "429" in msg:
+                has_key = os.environ.get("S2_API_KEY") or os.environ.get("SEMANTIC_SCHOLAR_API_KEY")
+                return ("s2 rate-limited" + ("" if has_key else
+                        " — set S2_API_KEY (free) to enable it"))
+            return f"{s} unavailable"
+        note = "; ".join(_why(s, m) for s, m in errors.items())
         sys.stderr.write(f"note: {len(errors)}/{len(chosen)} source(s) skipped "
-                         f"({note}); results from the rest.\n")
+                         f"({note}); results came from the other {len(chosen)-len(errors)}.\n")
 
     if args.markdown:
         print(render_markdown(papers, args.query))

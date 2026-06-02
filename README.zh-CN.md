@@ -108,6 +108,7 @@ cd ~/.claude/skills/paper-search && python -m pip install -r scripts/requirement
 
 - **没触发？** 安装后重启 Claude Code，并把话说成一个任务 —— *"找几篇关于…的最新论文"*。
 - **某篇打不开？** 那是付费墙、没有免费副本——skill 会直说，而不是瞎编。换一篇，或直接粘 DOI / PDF 链接。
+- **有时为什么不到 5 个库？** Semantic Scholar 对无 key 流量限流。脚本会自动重试，其余 4 个库照样兜底——或申请一个免费 [S2 API key](https://www.semanticscholar.org/product/api)，`export S2_API_KEY=...` 后就能稳定带上它。
 - **用哪个模型？** 任何模型都能跑；用 Claude Sonnet 及以上效果最好。
 - **隐私 & 免费？** 全程跑在你自己的 Claude 上——无需账号、不向我们回传任何东西，检索只访问公开学术 API。
 

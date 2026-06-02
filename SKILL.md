@@ -79,17 +79,26 @@ asks what the research says about something.
 
    Every card carries **clickable links that jump straight to the original paper,
    its open-access PDF, and its DOI** — keep them intact.
+
+   **Output EVERY card — never truncate.** If the user chose 30, run `--limit 30`
+   and show all 30 cards, in full, through the `— end of N results —` marker. Do
+   NOT stop early, summarise the rest, collapse cards into a list, or replace any
+   with "…". The count the user picked is a hard contract: deliver exactly that
+   many cards (or fewer only if the databases genuinely returned fewer — then say
+   so). A long reply is expected and fine.
 5. **Re-rank by research fit, not keyword overlap.** `rule_score` is only a
    keyword/recency/citation prior — the genuinely best-fit paper is often NOT
    first. When the user wants a curated answer, judge fit per
-   `references/search.md`, drop off-target hits, and reorder — but still present
-   each kept paper as its `--markdown` card (title link + details + links), and
-   you may add a one-line "why" under a card. Papers with a `pdf_url` are
-   open-access and can be deep-read next.
+   `references/search.md`, reorder the cards, and (only if asked to filter) drop
+   off-target hits — otherwise keep the full count. Present each kept paper as its
+   `--markdown` card (title link + details + links); you may add a one-line "why".
+   Papers with a `pdf_url` are open-access and can be deep-read next.
 
-`s2` may rate-limit (HTTP 429) without a key and `arxiv` can be slow — fine, the
-script reports skipped sources on stderr and the rest carry the search. Full
-pipeline in `references/search.md`.
+The script auto-retries Semantic Scholar on rate-limit (HTTP 429), which clears
+most skips. If `s2` still gets skipped a lot, set a free key —
+`export S2_API_KEY=...` (from semanticscholar.org/product/api) — and it stops
+429-ing. Any skipped source is reported on stderr and the rest carry the search.
+Full pipeline in `references/search.md`.
 
 ## Capability 2 — Deep Read
 

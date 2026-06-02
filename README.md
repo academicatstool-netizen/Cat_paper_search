@@ -108,6 +108,7 @@ Three open skills that chain into one research workflow — install any or all:
 
 - **It didn't trigger?** Restart Claude Code after installing, and phrase your message as a task — *"find recent papers on …"*.
 - **A paper won't open?** It's paywalled with no free copy — the skill says so instead of guessing. Try another result, or paste a DOI / PDF link.
+- **Why fewer than 5 databases sometimes?** Semantic Scholar rate-limits key-free traffic. It auto-retries, and the other 4 databases carry the search — or grab a free [S2 API key](https://www.semanticscholar.org/product/api) and `export S2_API_KEY=...` to always include it.
 - **Which model?** Any model works; quality is best on Claude Sonnet or above.
 - **Private & free?** It runs on your own Claude — no account, nothing sent to us. Searches only hit public scholarly APIs.
 
