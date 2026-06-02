@@ -99,26 +99,29 @@ asks what the research says about something.
    its open-access PDF, and its DOI** — keep them intact.
 
    **Hard output rules (do not override these for "helpfulness"):**
-   - **Show ALL N cards.** Paste the `--markdown` output in full, from card 1
-     through the `— end of N results —` line. If the user asked for 200 and the
-     databases returned 169, list all 169. Never stop early, never show only
-     "highlights" or "the most representative", never collapse the rest into "…
-     and more".
+   - **Show ALL N cards.** Present the full list, from item 1 through the
+     `— end of N results —` line. If the user asked for 200 and the databases
+     returned 169, list all 169. Never stop early, never show only "highlights"
+     or "the most representative", never collapse the rest into "… and more". The
+     saved `search-results.md` is your backstop — it always holds the complete set.
    - **One flat numbered list, 1…N.** Do NOT reorganise into themes, categories,
-     sections, or sub-numbered buckets. Keep the script's single continuous
-     `1, 2, 3 … N` numbering — that exact number is how the user refers back
-     ("deep-read #3", "summarise #7, #12"), so it must be a flat sequence with no
-     gaps or restarts.
-   - **Don't shorten cards.** Keep each card's metadata + links. You may add at
-     most a one-line "why" under a card.
-   - A long reply is expected when the count is large — that is what the user
-     asked for. You may add ONE line *after* the full list offering to narrow,
-     group, or deep-read a number — never *instead of* the full list.
-5. **Ordering, not culling.** "Re-rank by fit" means choosing the *order*, never
-   removing papers. Apply the user's **Sort** choice by reordering the whole set,
-   then number it 1…N (see `references/search.md` for fit criteria; `rule_score`
-   is only a prior). Drop papers ONLY if the user explicitly asked to filter
-   (e.g. "open access only", "exclude reviews"); otherwise keep all N. Papers with
+     sections, or sub-numbered buckets. One continuous `1, 2, 3 … N` sequence —
+     that number is how the user refers back ("deep-read #3", "summarise #7, #12").
+   - **Don't shorten cards.** Keep each item's metadata + links. You may add at
+     most a one-line "why" under one.
+   - A long reply is expected when the count is large. You may add ONE line
+     *after* the full list offering to narrow/filter/deep-read — never *instead*.
+5. **Re-rank by fit FIRST, then number 1…N.** This is required, not optional —
+   the script's `rule_score` is only a keyword prior, so its raw order floats
+   keyword-soup to the top (wrong domain, wrong sense of an ambiguous word — e.g.
+   "players" matching *football players* or game-theory *players* when the user
+   meant video-game players). Before presenting: judge each result's fit to the
+   user's ACTUAL question (see `references/search.md`), **lead with the genuinely
+   on-target papers, and push clearly off-target ones to the bottom — or tag them
+   `⚠ likely off-target`**. Then renumber the full set 1…N. Keep every paper
+   (the file has them all); only DROP papers if the user explicitly asked to
+   filter. For a very large list where full reordering is impractical, at least
+   lead with the strongest hits and flag the obvious off-targets. Papers with
    a `pdf_url` are open-access and can be deep-read by number next.
 
 The script auto-retries Semantic Scholar on rate-limit (HTTP 429), which clears

@@ -237,28 +237,54 @@ SOURCES = {
 
 
 # ----------------------------------------------------------------- dedup -----
-def _dedup_key(p):
-    if p.get("doi"):
-        return ("doi", p["doi"].lower().strip())
-    t = re.sub(r"[^a-z0-9]", "", (p.get("title") or "").lower())
-    return ("title", t[:80])
+def _norm_title(t):
+    return re.sub(r"[^a-z0-9]", "", (t or "").lower())[:90]
+
+
+def _doi_key(doi):
+    # Strip version suffixes so 10.x/abc.v1 == 10.x/abc, and arXiv vN variants.
+    d = (doi or "").lower().strip()
+    d = re.sub(r"v\d+$", "", d) if "arxiv" in d else d
+    d = re.sub(r"\.v\d+$", "", d)
+    return d
+
+
+def _richer(a, b):
+    """Keep the better record: prefer one with a PDF, then more citations,
+    then one with an abstract."""
+    def s(p):
+        return (1 if p.get("pdf_url") else 0, p.get("citation_count") or 0,
+                1 if p.get("abstract") else 0)
+    keep, drop = (a, b) if s(a) >= s(b) else (b, a)
+    if not keep.get("abstract") and drop.get("abstract"):
+        keep["abstract"] = drop["abstract"]
+    if not keep.get("pdf_url") and drop.get("pdf_url"):
+        keep["pdf_url"] = drop["pdf_url"]
+    keep["citation_count"] = max(keep.get("citation_count", 0), drop.get("citation_count", 0))
+    return keep
 
 
 def dedup(papers):
-    best = {}
+    # Pass 1: collapse by normalized DOI (version-stripped), else by title.
+    by_key = {}
     for p in papers:
-        k = _dedup_key(p)
-        if k not in best:
-            best[k] = p
+        doi = _doi_key(p.get("doi"))
+        k = ("doi", doi) if doi else ("title", _norm_title(p.get("title")))
+        by_key[k] = _richer(by_key[k], p) if k in by_key else p
+    # Pass 2: collapse the same title appearing under different DOIs
+    # (e.g. a preprint and its published version, or two repositories).
+    by_title = {}
+    out = []
+    for p in by_key.values():
+        t = _norm_title(p.get("title"))
+        if not t:
+            out.append(p)
+            continue
+        if t in by_title:
+            by_title[t] = _richer(by_title[t], p)
         else:
-            # Merge: keep the record with abstract / pdf / more citations.
-            cur = best[k]
-            if not cur.get("abstract") and p.get("abstract"):
-                cur["abstract"] = p["abstract"]
-            if not cur.get("pdf_url") and p.get("pdf_url"):
-                cur["pdf_url"] = p["pdf_url"]
-            cur["citation_count"] = max(cur.get("citation_count", 0), p.get("citation_count", 0))
-    return list(best.values())
+            by_title[t] = p
+    return out + list(by_title.values())
 
 
 # -------------------------------------------------------------- scoring ------
@@ -326,7 +352,8 @@ def render_compact(papers, query):
     if not papers:
         return f"## 🔎 No results for: {query}\n\nTry broader terms or fewer filters."
     n = len(papers)
-    out = [f"## 🔎 {n} results for: {query}",
+    oa = sum(1 for p in papers if p.get("pdf_url"))
+    out = [f"## 🔎 {n} results for: {query}  ·  {oa} open-access 🟢 (deep-readable)",
            f"*All {n}, numbered 1–{n}. Show the whole list; the user refers to any "
            f"paper by its number (e.g. \"deep-read #3\").*", ""]
     for i, p in enumerate(papers, 1):
@@ -353,7 +380,8 @@ def render_markdown(papers, query):
     if not papers:
         return f"## 🔎 No results for: {query}\n\nTry broader terms or fewer filters."
     n = len(papers)
-    out = [f"## 🔎 {n} results for: {query}",
+    oa = sum(1 for p in papers if p.get("pdf_url"))
+    out = [f"## 🔎 {n} results for: {query}  ·  {oa} open-access 🟢 (deep-readable)",
            f"*All {n} results, numbered 1–{n}. Show every card as one flat list — "
            f"don't truncate or regroup; the user refers to papers by number.*", ""]
     for i, p in enumerate(papers, 1):
