@@ -23,9 +23,12 @@ and reading reports are built only from the extracted PDF text.
   search a topic ──▶ ranked real papers ──▶ deep-read the open-access ones
 ```
 
-> **Running the scripts:** the commands below use paths relative to this skill's
-> folder — run them from the skill directory, or prefix the full path to the
-> script. If `python` isn't found, use `python3` (needs Python 3.8+).
+> **Running the scripts:** run them **by their full path from your current
+> working directory — do NOT `cd` into the skill folder.** That way `--save`
+> writes `search-results.md` into the user's workspace, where Claude can open it
+> as a clickable preview. (Replace `scripts/…` in the examples below with the
+> skill's real path, e.g. `~/.claude/skills/paper-search/scripts/search_papers.py`.)
+> If `python` isn't found, use `python3` (needs Python 3.8+).
 
 ## Capability 1 — Search
 
@@ -80,8 +83,12 @@ asks what the research says about something.
    stdout **as-is** (use **`--compact`** for large counts → a clean 1…N list they
    can scan, or **`--markdown`** cards for smaller/detailed sets) — the script,
    not the model, produces the layout, so it's identical on any model. Then point
-   the user to the file, e.g. *"📄 Full list (all N, with abstracts) saved to
-   `search-results.md`."* A `--markdown` card looks like:
+   the user to the file **as a clickable Markdown link with the relative path** so
+   it opens in Claude's preview pane — write it exactly as
+   `📄 Full list (all N, with abstracts): [search-results.md](search-results.md)`.
+   (Use the relative path, not an absolute one — absolute paths render gray/
+   non-clickable. This works because you ran the script from the workspace, so the
+   file is right there.) A `--markdown` card looks like:
 
    > ### 1. [Paper title](https://doi.org/…)  ← title links to the original
    > Authors  ·  Year  ·  *Venue*  ·  cited by N  ·  via Source  ·  🟢 Open Access

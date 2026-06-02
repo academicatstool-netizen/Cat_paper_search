@@ -479,8 +479,10 @@ def main():
         try:
             with open(args.save, "w", encoding="utf-8") as fh:
                 fh.write(render_markdown(papers, args.query) + "\n")
-            sys.stderr.write(f"saved all {len(papers)} results to "
-                             f"{os.path.abspath(args.save)}\n")
+            # Print the path AS GIVEN (keep it relative) so it can be shown as a
+            # clickable, previewable Markdown link in the working directory.
+            sys.stderr.write(f"saved all {len(papers)} results to {args.save}  "
+                             f"(present as a clickable link: [{args.save}]({args.save}))\n")
         except OSError as e:
             sys.stderr.write(f"warning: could not write {args.save}: {e}\n")
 
