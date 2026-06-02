@@ -37,22 +37,11 @@
 
 ## 🎬 Demo
 
-Ask in plain language:
+Say it in one line — the topic, plus any options inline:
 
-> *"Find me papers on CRISPR off-target effects."*
+> *"Find 20 papers on CRISPR off-target effects since 2020."*
 
-First it shows a quick **search setup** so you stay in control — same on any model:
-
-> 🔍 **Search setup** — confirm or tweak, then I'll run it:
-> 1. **Topic** — CRISPR off-target effects
-> 2. **How many papers** — 20  *(10 / 20 / 40)*
-> 3. **Years** — any  *(e.g. 2020–2026)*
-> 4. **Open-access only** — no  *(yes / no)*
-> 5. **Sort by** — best match  *(best match / newest / most cited / open access)*
->
-> Reply with any changes, or just say **go**.
-
-Then it returns a **numbered list of every result** — one scannable line each, so you can act on any of them by number. The format is fixed by the tool, identical no matter which model runs the skill:
+It runs right away — no forms, no back-and-forth — and returns a **numbered list of every result**, one scannable line each, so you can act on any of them by number. The format is fixed by the tool, identical no matter which model runs the skill:
 
 > ## 🔎 5 results for: CRISPR off-target effects
 > 1. **[Off-target effects in CRISPR/Cas9 gene editing](https://doi.org/10.3389/fbioe.2023.1143157)** — Congting Guo et al. · 2023 · cited 537 · 🟢 · [PDF](https://www.frontiersin.org/articles/10.3389/fbioe.2023.1143157/pdf)

@@ -32,25 +32,27 @@ and reading reports are built only from the extracted PDF text.
 **When:** the user wants to find papers / prior work / sources on a topic, or
 asks what the research says about something.
 
-1. **Show the search setup first, and let the user choose.** Before searching,
-   present this compact menu — with sensible defaults pre-filled from what they
-   already said — then wait for their reply. It's plain text, so any model shows
-   it the same way:
+1. **Default = run immediately. Only ask if the topic is missing.** Don't gate
+   the search behind a menu. If the message already contains a **topic** (e.g.
+   *"查论文 玩家共鸣机制 200"* or *"find papers on X"*), search **right away** —
+   take any params they included (count, years, sort, open-access) and sensible
+   defaults for the rest (20 results, all years, best match). **Do not show the
+   setup menu and do not wait.** After the results, add ONE optional line so they
+   can still refine: *"Showing 200, all years, best match — say e.g. 'since 2021,
+   open access only' to refine."*
 
-   > 🔍 **Search setup** — confirm or tweak, then I'll run it:
-   > 1. **Topic** — `<topic inferred from the user's request>`
+   Show the setup menu **only when you genuinely don't have a topic to search**
+   (or it's too vague to query). Then, and only then:
+
+   > 🔍 **Search setup** — tell me the topic (tweak the rest if you like):
+   > 1. **Topic** — `(what should I search?)`
    > 2. **How many papers** — `20`  *(e.g. 10 / 20 / 40)*
-   > 3. **Years** — `any`  *(e.g. 2020–2026)*
-   > 4. **Open-access only** (only papers you can read in full) — `no`  *(yes / no)*
-   > 5. **Sort by** — `best match`  *(best match / newest / most cited / open access)*
+   > 3. **Years** — `any`  ·  4. **Open-access only** — `no`  ·  5. **Sort** — `best match`
    >
-   > Reply with any changes (e.g. *"30 papers, since 2021, open access"*), or just say **go**.
+   > Just give me a topic, or adjust any line.
 
-   Pre-fill any field the user already gave. If they clearly want speed ("just
-   search", or they specified everything up front), skip the wait and run it.
-   Map the choices to flags: how-many → `--limit`, years →
-   `--from-year` / `--to-year`, open-access → `--open-access-only`, sort → your
-   re-rank preference (step 5) plus `--open-access-only` for "open access".
+   Map choices to flags: count → `--limit`, years → `--from-year` / `--to-year`,
+   open-access → `--open-access-only`, sort → your re-rank preference (step 5).
 2. For a focused query, search directly. For a broad/exploratory one, first
    expand it into directions and search the best 2–4 query strings (see
    `references/search.md`, Stages 1–3).
