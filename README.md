@@ -20,7 +20,7 @@
 
 ---
 
-> ### 🪶 This is the **lite, open-source edition** of [**AcademiCats**](https://academicats.com)
+> ### 🪶 This is the **lite, open-source edition** of [**AcademiCats**](https://academicats.com) — now in free open beta
 > The full product at **[academicats.com](https://academicats.com)** is an AI research workbench that takes you from *finding* papers all the way through *reading, writing, and self-review* — with Google Scholar breadth, Chinese-language sources, saved libraries, a polished UI, and a multi-agent reviewer. This skill is a free, self-contained slice of that workflow you can run on your own Claude.
 
 ---
@@ -116,6 +116,8 @@ Three open skills that chain into one research workflow — install any or all:
 
 ### Want the whole research workflow?
 **→ [academicats.com](https://academicats.com) ←**
+
+*🚀 The full product is in **open beta** — free to try right now.*
 
 <br>
 

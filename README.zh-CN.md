@@ -20,7 +20,7 @@
 
 ---
 
-> ### 🪶 这是 [**AcademiCats**](https://academicats.com) 的**开源轻量版**
+> ### 🪶 这是 [**AcademiCats**](https://academicats.com) 的**开源轻量版**（正式版现处公测，免费试用）
 > 完整产品在 **[academicats.com](https://academicats.com)** —— 一个 AI 研究工作台，带你从*找文献*一路走到*读、写、自审*：拥有 Google Scholar 级广度、中文文献源、文献库保存、精致界面和多智能体审稿。本 skill 是这套工作流中一块免费、自包含、可在你自己的 Claude 上运行的切片。
 
 ---
@@ -116,6 +116,8 @@ cd ~/.claude/skills/paper-search && python -m pip install -r scripts/requirement
 
 ### 想要完整的研究工作流？
 **→ [academicats.com](https://academicats.com) ←**
+
+*🚀 正式版现处**公测阶段** —— 现在免费试用。*
 
 <br>
 
