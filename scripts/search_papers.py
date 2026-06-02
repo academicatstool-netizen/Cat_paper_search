@@ -246,7 +246,11 @@ def dedup(papers):
 # prior — Claude re-ranks by research fit downstream (see references/search.md).
 def rule_score(p, query, this_year=2026):
     q = query.lower()
-    tokens = [t for t in re.findall(r"[a-z0-9]+", q) if len(t) > 2]
+    # ASCII word tokens (>2 chars) plus individual CJK characters, so Chinese /
+    # Japanese queries get real keyword signal instead of scoring near-zero.
+    ascii_tokens = [t for t in re.findall(r"[a-z0-9]+", q) if len(t) > 2]
+    cjk_tokens = re.findall(r"[一-鿿]", q)
+    tokens = ascii_tokens + cjk_tokens
     title = (p.get("title") or "").lower()
     abstract = (p.get("abstract") or "").lower()
     sig = {}
@@ -303,8 +307,21 @@ def main():
                          "(easy to skim; omit for the full records incl. abstracts).")
     args = ap.parse_args()
 
-    chosen = [s.strip() for s in args.sources.split(",") if s.strip() in SOURCES]
-    per_source = max(10, args.limit)
+    requested = [s.strip() for s in args.sources.split(",") if s.strip()]
+    chosen = [s for s in requested if s in SOURCES]
+    unknown = [s for s in requested if s not in SOURCES]
+    if unknown:
+        sys.stderr.write(f"note: ignoring unknown source(s): {', '.join(unknown)} "
+                         f"(valid: {', '.join(SOURCES)})\n")
+    if not chosen:
+        sys.stderr.write("error: no valid sources selected.\n")
+        json.dump({"query": args.query, "count": 0, "source_errors": {}, "papers": []},
+                  sys.stdout, ensure_ascii=False, indent=2)
+        sys.stdout.write("\n")
+        return
+    # Fetch a healthy candidate pool per source (decoupled from --limit) so that
+    # year / open-access filters have room to work instead of wiping a tiny pool.
+    per_source = min(50, max(40, args.limit))
     errors = {}
     collected = []
     with cf.ThreadPoolExecutor(max_workers=len(chosen) or 1) as ex:

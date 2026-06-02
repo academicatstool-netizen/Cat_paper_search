@@ -74,7 +74,8 @@ in a search.
    python scripts/fetch_pdf.py --title "Attention is all you need"
    # --text-only prints just the extracted text; drop it for full JSON
    #   (per-page array + resolved URL + which sources were tried)
-   # options: --max-pages 8 --max-chars 24000 --email you@example.com
+   # reads the first ~12 pages by default; for a long paper's results section
+   # raise it, e.g. --max-pages 20 --max-chars 60000   (--email for Unpaywall)
    ```
 2. If `resolved_pdf_url` is null, the paper is paywalled with no free copy — say
    so plainly and offer to try another identifier or work from the abstract.

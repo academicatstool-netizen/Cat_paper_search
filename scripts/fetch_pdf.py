@@ -29,11 +29,13 @@ import sys
 import ssl
 import urllib.parse
 import urllib.request
+import xml.etree.ElementTree as ET
 
 USER_AGENT = "academi-skill/1.0 (mailto:hello@example.com)"
 TIMEOUT = 25
-MAX_PAGES = 8         # default: read the first 8 pages with text
-MAX_CHARS = 24000     # cap on how much text to hand back for analysis
+MAX_PAGES = 12        # default: read the first 12 pages with text (covers most
+                      # papers' results/discussion, not just intro+method)
+MAX_CHARS = 40000     # cap on how much text to hand back for analysis
 
 # Fall back to an unverified TLS context on machines with a broken CA store
 # (common on Windows) — all requests here are public read-only GETs.
@@ -141,13 +143,70 @@ def cand_s2(doi, title):
 
 
 def resolve_doi_from_title(title):
+    """Best-effort DOI for a title via Crossref, guarded by a title match so we
+    don't silently resolve an unrelated paper. Returns None if nothing fits."""
     try:
         data = _get_json("https://api.crossref.org/works?query.bibliographic=" +
-                         urllib.parse.quote(title) + "&rows=1&select=DOI,title")
-        items = data.get("message", {}).get("items", [])
-        return items[0].get("DOI") if items else None
+                         urllib.parse.quote(title) + "&rows=3&select=DOI,title")
+        for it in data.get("message", {}).get("items", []):
+            found = " ".join(it.get("title", []) or [])
+            doi = it.get("DOI")
+            if doi and _title_match(title, found):
+                return doi
+        return None
     except Exception:
         return None
+
+
+def _title_match(query, found):
+    """Loose check that a matched record's title really is the queried paper —
+    guards against an API returning an unrelated top hit."""
+    norm = lambda s: set(re.findall(r"[a-z0-9]+", (s or "").lower()))
+    a, b = norm(query), norm(found)
+    if not a or not b:
+        return False
+    return len(a & b) / len(a) >= 0.5
+
+
+def cand_title_arxiv(title):
+    """Search arXiv by title — the most reliable route for the many papers
+    people want to read by name that live on arXiv (ML/CS/physics/stat)."""
+    if not title:
+        return []
+    try:
+        url = ("https://export.arxiv.org/api/query?search_query=" +
+               urllib.parse.quote("all:" + title) + "&max_results=1")
+        body, _ = _get(url)
+        ns = {"a": "http://www.w3.org/2005/Atom"}
+        e = ET.fromstring(body).find("a:entry", ns)
+        if e is None or not _title_match(title, e.findtext("a:title", "", ns)):
+            return []
+        for link in e.findall("a:link", ns):
+            if link.get("title") == "pdf":
+                return [link.get("href")]
+    except Exception:
+        return []
+    return []
+
+
+def cand_title_openalex(title):
+    """Find an OA PDF by matching the title in OpenAlex (title-only search)."""
+    if not title:
+        return []
+    try:
+        data = _get_json("https://api.openalex.org/works?filter=title.search:" +
+                         urllib.parse.quote(title) + "&per_page=1")
+        results = data.get("results", [])
+    except Exception:
+        return []
+    if not results or not _title_match(title, results[0].get("title")):
+        return []
+    w, urls = results[0], []
+    for key in ("best_oa_location", "primary_location"):
+        loc = w.get(key) or {}
+        if loc.get("pdf_url"):
+            urls.append(loc["pdf_url"])
+    return urls
 
 
 # ----------------------------------------------------------- text extract ----
@@ -195,6 +254,11 @@ def main():
                          "stderr) instead of the full JSON object.")
     args = ap.parse_args()
 
+    if not (args.doi or args.arxiv or args.pdf_url or args.title):
+        sys.stderr.write("error: give one of --doi, --arxiv, --pdf-url, or --title "
+                         "to identify the paper.\n")
+        sys.exit(2)
+
     doi = args.doi
     if not doi and not args.arxiv and not args.pdf_url and args.title:
         doi = resolve_doi_from_title(args.title)
@@ -204,6 +268,12 @@ def main():
     if args.pdf_url:
         candidates.append(args.pdf_url)
     candidates += cand_arxiv_id(args.arxiv)
+    # Title-based direct discovery first — searching S2 and OpenAlex by title
+    # finds an OA PDF (or arXiv id) far more reliably than Crossref's DOI alone.
+    if args.title:
+        candidates += cand_title_arxiv(args.title)
+        candidates += cand_s2(None, args.title)
+        candidates += cand_title_openalex(args.title)
     candidates += cand_arxiv_by_doi(doi)
     candidates += cand_unpaywall(doi, args.email)
     candidates += cand_openalex(doi)
@@ -256,6 +326,13 @@ def main():
         sys.stderr.write(f"pages: {len(pages)}/{total}"
                          f"{' (truncated)' if len(pages) < total else ''}\n")
         sys.stdout.write(joined + "\n")
+        if len(pages) < total:
+            # Make truncation visible IN the text stream, not just on stderr, so
+            # a reading built from this can't silently omit later sections.
+            sys.stdout.write(
+                f"\n[... TRUNCATED: only the first {len(pages)} of {total} pages "
+                f"were extracted; later sections (e.g. full results) are not "
+                f"included. Re-run with --max-pages/--max-chars for more. ...]\n")
         return
 
     json.dump({

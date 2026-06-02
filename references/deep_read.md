@@ -8,14 +8,23 @@ text, then produce an evidence-aware reading report from the extracted text
 ## Flow
 
 1. Get an identifier for the paper (DOI, arXiv id, a direct `pdf_url`, or just
-   the title). Prefer DOI or arXiv id.
+   the title). Prefer DOI or arXiv id — they resolve reliably. A bare `--title`
+   is best-effort: it works for distinctive titles but a famous paper with many
+   namesakes (e.g. "BERT") can be hard to pin down from the title alone. **When
+   you only have a title, run a search first** (Capability 1) and deep-read the
+   matched result by its DOI/arXiv id — that's both more reliable and lets you
+   confirm you've got the right paper. `fetch_pdf.py` guards against silently
+   downloading a same-named different paper, so a mismatch returns "no PDF"
+   rather than the wrong text.
 2. Run `fetch_pdf.py` (see SKILL.md for flags). It returns `text`, `pages[]`,
    `page_count`, and `truncated`.
 3. If `resolved_pdf_url` is null, the paper is almost certainly paywalled with
    no OA copy. Tell the user plainly and offer to (a) try a different
    identifier, or (b) work from the abstract instead. Do not fabricate.
 4. If `truncated` is true, the report covers only the analysed excerpt
-   (the first ~8 pages). Disclose this in the output.
+   (the first ~12 pages by default). Disclose this in the output, and for a long
+   paper whose results/discussion you need, re-run with a higher `--max-pages`
+   (and `--max-chars`) to pull in the later sections.
 
 ## Deep-read analysis prompt (apply to the extracted text)
 
