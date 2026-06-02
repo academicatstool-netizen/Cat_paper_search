@@ -58,7 +58,10 @@ asks what the research says about something.
    Semantic Scholar, Europe PMC — deduped and rule-scored):
 
    ```bash
-   python scripts/search_papers.py "your query" --limit 40 --compact
+   python scripts/search_papers.py "your query" --limit 40 --compact --save
+   #   --save     : ALWAYS include this — writes the FULL list (every card, with
+   #                abstracts + links) to search-results.md. This is the complete
+   #                record; it can't be truncated by what you show in chat.
    #   --compact  : numbered one-line-per-paper list — USE THIS when the count is
    #                large (~25+) so the whole list is scannable and fully shown
    #   --markdown : richer cards (title + abstract + links) — good for smaller
@@ -68,12 +71,15 @@ asks what the research says about something.
    # filters:  --from-year 2021 --to-year 2026  --open-access-only
    # sources:  --sources openalex,crossref,arxiv,s2,europepmc
    ```
-4. **Present the full numbered list.** Pick the format by size: **`--compact`**
-   for large counts (the user's 200 → a clean 1…N list they can scan), or
-   **`--markdown`** cards for smaller/detailed sets. Either way, **show the
-   script's output as-is** — the script (not the model) produces the layout, so it
-   is identical no matter which model runs the skill. A `--markdown` card looks
-   like:
+4. **Present the full numbered list, and hand over the saved file.** Always run
+   with **`--save`** — the script writes every result to `search-results.md`
+   (printed path on stderr). That file is the guaranteed-complete record, so even
+   if the chat view ends up partial, nothing is lost. In chat, show the script's
+   stdout **as-is** (use **`--compact`** for large counts → a clean 1…N list they
+   can scan, or **`--markdown`** cards for smaller/detailed sets) — the script,
+   not the model, produces the layout, so it's identical on any model. Then point
+   the user to the file, e.g. *"📄 Full list (all N, with abstracts) saved to
+   `search-results.md`."* A `--markdown` card looks like:
 
    > ### 1. [Paper title](https://doi.org/…)  ← title links to the original
    > Authors  ·  Year  ·  *Venue*  ·  cited by N  ·  via Source  ·  🟢 Open Access

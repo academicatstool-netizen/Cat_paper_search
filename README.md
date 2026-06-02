@@ -63,6 +63,8 @@ Then it returns a **numbered list of every result** — one scannable line each,
 
 Every title links straight to the paper; 🟢 means a free PDF you can read in full. Then just say **"deep-read #1"** — it opens that paper's PDF and reads it back to you with findings tied to page numbers, grounded entirely in the paper's own text.
 
+> Every search also saves the **complete list** (all results, with abstracts) to a `search-results.md` file — so the full set is always captured, never cut off.
+
 <br>
 
 ## 🚀 Get started in 60 seconds

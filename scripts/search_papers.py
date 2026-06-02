@@ -414,6 +414,12 @@ def main():
                     help="Print a numbered one-line-per-paper list (title link + "
                          "authors/year/citations/OA + PDF). Best for scanning many "
                          "results and referring to a paper by its number.")
+    ap.add_argument("--save", nargs="?", const="search-results.md", default=None,
+                    metavar="PATH",
+                    help="Also write the FULL result list (every card, with "
+                         "abstracts + links) to a Markdown file (default "
+                         "search-results.md). Guarantees all N results are saved "
+                         "no matter what gets shown in chat.")
     args = ap.parse_args()
 
     requested = [s.strip() for s in args.sources.split(",") if s.strip()]
@@ -466,6 +472,17 @@ def main():
         note = "; ".join(_why(s, m) for s, m in errors.items())
         sys.stderr.write(f"note: {len(errors)}/{len(chosen)} source(s) skipped "
                          f"({note}); results came from the other {len(chosen)-len(errors)}.\n")
+
+    # Always-on safety net: write the FULL list to a Markdown file so every
+    # result is captured even if only part of it ends up shown in chat.
+    if args.save is not None:
+        try:
+            with open(args.save, "w", encoding="utf-8") as fh:
+                fh.write(render_markdown(papers, args.query) + "\n")
+            sys.stderr.write(f"saved all {len(papers)} results to "
+                             f"{os.path.abspath(args.save)}\n")
+        except OSError as e:
+            sys.stderr.write(f"warning: could not write {args.save}: {e}\n")
 
     if args.compact:
         print(render_compact(papers, args.query))

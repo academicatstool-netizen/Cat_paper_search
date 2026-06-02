@@ -8,3 +8,5 @@ search_*.txt
 fetch_*.txt
 *_stderr.txt
 *_out.json
+search-results.md
+*-results.md
