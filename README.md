@@ -52,20 +52,16 @@ First it shows a quick **search setup** so you stay in control — same on any m
 >
 > Reply with any changes, or just say **go**.
 
-Then it runs a real search and hands back **result cards** — each with full details and links that jump straight to the paper. The cards look the same no matter which model runs the skill, because the format is fixed by the tool, not improvised:
+Then it returns a **numbered list of every result** — one scannable line each, so you can act on any of them by number. The format is fixed by the tool, identical no matter which model runs the skill:
 
----
+> ## 🔎 5 results for: CRISPR off-target effects
+> 1. **[Off-target effects in CRISPR/Cas9 gene editing](https://doi.org/10.3389/fbioe.2023.1143157)** — Congting Guo et al. · 2023 · cited 537 · 🟢 · [PDF](https://www.frontiersin.org/articles/10.3389/fbioe.2023.1143157/pdf)
+> 2. **[Latest Developed Strategies to Minimize Off-Target Effects in CRISPR-Cas Genome Editing](https://doi.org/10.3390/cells9071608)** — Naeem et al. · 2020 · cited 451 · 🟢 · [PDF](https://www.mdpi.com/2073-4409/9/7/1608/pdf)
+> 3. **[CRISPR/Cas Systems in Genome Editing: sgRNA Design & Off‑Target Evaluation](https://doi.org/10.1002/advs.201902312)** — Manghwar et al. · 2020 · cited 357 · 🟢 · [PDF](https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/advs.201902312)
+> 4. **[CRISPR/Cas13 effectors have differing off-target effects in eukaryotic cells](https://doi.org/10.1093/nar/gkac159)** — Ai et al. · 2022 · cited 151 · 🔒
+> 5. **[Beyond the promise: evaluating & mitigating off-target effects for safer therapeutics](https://doi.org/10.3389/fbioe.2023.1339189)** — Lopes et al. · 2024 · cited 62 · 🟢
 
-**1. [Off-target effects in CRISPR/Cas9 gene editing](https://doi.org/10.3389/fbioe.2023.1143157)**
-Congting Guo, Xiaoteng Ma, Fei Gao, Yuxuan Guo · 2023 · *Frontiers in Bioengineering and Biotechnology* · cited by 537 · 🟢 Open Access
-
-> Gene editing stands for the methods to precisely make changes to a specific nucleic acid sequence. With the recent development of the CRISPR/Cas9 system, gene editing has become efficient, convenient and programmable…
-
-[📄 Open paper](https://doi.org/10.3389/fbioe.2023.1143157) · [⬇ PDF](https://www.frontiersin.org/articles/10.3389/fbioe.2023.1143157/pdf) · [🔗 DOI](https://doi.org/10.3389/fbioe.2023.1143157)
-
----
-
-…then it opens the open-access PDF and reads it back to you with findings tied to page numbers — grounded entirely in the paper's own text.
+Every title links straight to the paper; 🟢 means a free PDF you can read in full. Then just say **"deep-read #1"** — it opens that paper's PDF and reads it back to you with findings tied to page numbers, grounded entirely in the paper's own text.
 
 <br>
 

@@ -52,20 +52,16 @@
 >
 > 回复任何修改，或直接说 **go**。
 
-确认后它真实地跑一次检索，返回一组**结果卡片**——每张都带完整信息和可直接点开跳转原文的链接。卡片格式由工具固定生成，**换任何大模型跑都长一个样**：
+确认后它真实地跑一次检索，返回一份**带编号的结果列表**——每篇一行、可扫描，你能直接按序号操作。格式由工具固定生成，**换任何大模型跑都长一个样**：
 
----
+> ## 🔎 共 5 条结果：CRISPR off-target effects
+> 1. **[Off-target effects in CRISPR/Cas9 gene editing](https://doi.org/10.3389/fbioe.2023.1143157)** — Congting Guo et al. · 2023 · 被引 537 · 🟢 · [PDF](https://www.frontiersin.org/articles/10.3389/fbioe.2023.1143157/pdf)
+> 2. **[Latest Developed Strategies to Minimize Off-Target Effects in CRISPR-Cas Genome Editing](https://doi.org/10.3390/cells9071608)** — Naeem et al. · 2020 · 被引 451 · 🟢 · [PDF](https://www.mdpi.com/2073-4409/9/7/1608/pdf)
+> 3. **[CRISPR/Cas Systems in Genome Editing: sgRNA Design & Off‑Target Evaluation](https://doi.org/10.1002/advs.201902312)** — Manghwar et al. · 2020 · 被引 357 · 🟢 · [PDF](https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/advs.201902312)
+> 4. **[CRISPR/Cas13 effectors have differing off-target effects in eukaryotic cells](https://doi.org/10.1093/nar/gkac159)** — Ai et al. · 2022 · 被引 151 · 🔒
+> 5. **[Beyond the promise: evaluating & mitigating off-target effects for safer therapeutics](https://doi.org/10.3389/fbioe.2023.1339189)** — Lopes et al. · 2024 · 被引 62 · 🟢
 
-**1. [Off-target effects in CRISPR/Cas9 gene editing](https://doi.org/10.3389/fbioe.2023.1143157)**
-Congting Guo, Xiaoteng Ma, Fei Gao, Yuxuan Guo · 2023 · *Frontiers in Bioengineering and Biotechnology* · 被引 537 · 🟢 开放获取
-
-> Gene editing stands for the methods to precisely make changes to a specific nucleic acid sequence. With the recent development of the CRISPR/Cas9 system, gene editing has become efficient, convenient and programmable…
-
-[📄 打开原文](https://doi.org/10.3389/fbioe.2023.1143157) · [⬇ PDF](https://www.frontiersin.org/articles/10.3389/fbioe.2023.1143157/pdf) · [🔗 DOI](https://doi.org/10.3389/fbioe.2023.1143157)
-
----
-
-……随后打开那篇开放获取 PDF，把发现逐条标注页码读给你听 —— 完全基于论文自身的正文。
+标题直接链接原文；🟢 表示有可读全文的免费 PDF。然后你只要说 **"深读 #1"**——它就打开那篇的 PDF，把发现逐条标注页码读给你听，完全基于论文自身的正文。
 
 <br>
 
