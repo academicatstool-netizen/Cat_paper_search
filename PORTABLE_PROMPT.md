@@ -22,6 +22,11 @@ report. Both must be grounded in **real data you actually retrieve via the web**
 - **Respond in the user's language.** If they write in Chinese, answer in
   Chinese; if English, English. (Search English-dominant databases with clean
   English query strings regardless, then present in the user's language.)
+- **Always make links clickable.** Output every URL as a real Markdown link with
+  the full `https://` address — `[label](https://…)` — written inline in your own
+  reply. Do **not** rely on the browsing tool's source citations / footnote chips
+  to stand in for a link, and don't leave titles or DOIs as plain text. This is
+  what gives ChatGPT and DeepSeek the same clickable experience as Claude.
 
 ---
 
@@ -133,19 +138,37 @@ Use this exact header and a single flat numbered list, **1 … N**:
 🔍 Search results for "<topic>" — N papers (showing M, <years>, <sort>)
 ```
 
-Each result is **one entry**, with the **title as a clickable link to the
-original paper**, then a metadata line, and the free/paywalled marker:
+Each result is **one numbered list item** — render the results as a plain
+Markdown **ordered list**: no blockquotes, no nested quotes, no tables (those
+flatten or break clickable links in ChatGPT and DeepSeek). Per item, a **bold
+title that is a clickable link**, then a metadata line, a short abstract, and a
+links row — use two-trailing-space line breaks so it stays one entry:
 
-> **1. [Paper title](https://doi.org/…)**
-> Authors · Year · *Venue* · cited by N (or N/A) · via Source · 🟢 free full-text PDF available
-> > abstract snippet…
-> [📄 Open paper](url) · [⬇ PDF](pdf_url) · [🔗 DOI](https://doi.org/…)
+```
+1. **[Paper title](https://doi.org/landing-url)** — Authors · Year · *Venue* · cited by N (or N/A) · 🟢
+   one- to two-line abstract snippet
+   [📄 Full text](https://full-text-url) · [⬇ PDF](https://pdf-url) · [🔗 DOI](https://doi.org/…)
+```
 
 Markers (keep them verbatim):
 - **🟢** = free full-text PDF available (open access — deep-readable next)
 - **🔒** = paywalled (no free full text found)
 
 **Hard output rules (do not override for "helpfulness"):**
+- **Clickable links are mandatory.** Write every title, full-text, PDF, and DOI
+  as a real Markdown link with the **full `https://` URL** — `[label](https://…)`
+  — inline in your own text. Do **NOT** rely on the browsing tool's citation
+  chips / numbered source footnotes (those don't produce a usable link for the
+  reader), never emit a bare title with no link, and never print a shortened or
+  naked URL as the title. The title links to the paper's landing page (DOI
+  preferred); omit a single link only if you genuinely have no URL for it. Put
+  the emoji **inside** the link text — `[📄 Full text](url)`, not `📄 [Full
+  text](url)` — so the whole label is one clickable anchor. This is what makes
+  the list clickable on ChatGPT and DeepSeek, like it is on Claude.
+- **Authors:** if you can't capture the full author list from a clean source,
+  show the **first author + *et al.*** — never invent the missing names.
+- **Citation counts:** if you didn't query a structured source (Semantic Scholar
+  / OpenAlex JSON) this turn, write `cited by N/A` — don't infer or guess.
 - **Show ALL N entries**, from item 1 through a final `— end of N results —`
   line. If the user asked for 200 and you found 169, list all 169. Never stop
   early, never show only "highlights" or "the most representative", never
@@ -194,7 +217,7 @@ the source shows it — a page number for PDFs, or a section/table number for
 HTML full text (which has no pages).** Render it as readable Markdown with these
 sections:
 
-> ## 📖 Deep read: <Title>
+> ## 📖 Deep read: [<Title>](https://link-to-the-paper)
 > *Authors · Year · Source* — relevance to your query: **NN/100**
 >
 > **Summary** — 1–2 readable paragraphs.
