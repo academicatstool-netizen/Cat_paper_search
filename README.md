@@ -29,7 +29,7 @@
 
 🔍 **Search that means it** — one question searches five scholarly databases at once (OpenAlex, Crossref, arXiv, Semantic Scholar, Europe PMC), de-duplicates, and ranks by genuine research fit — not just keyword overlap.
 
-📄 **Read, not skim** — pick any open-access paper and it resolves the PDF, extracts the text, and gives you a structured, page-anchored reading: the research question, method, key findings, and limitations.
+📄 **Read, not skim** — pick any open-access paper and it resolves the PDF, extracts the text, and gives you a structured reading — research question, method, key findings, and limitations — with page references where the source supports them.
 
 🛡️ **No made-up papers, no made-up findings** — every result is a real record from a public API, and every reading is built only from the actual extracted text. When a paper is paywalled, it says so — it never invents the contents.
 
