@@ -13,7 +13,7 @@
 <br>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-0064F4.svg)](LICENSE)
-&nbsp;[![Runs on Claude](https://img.shields.io/badge/运行于-Claude-0064F4.svg)](https://claude.com/claude-code)
+&nbsp;[![Runs on](https://img.shields.io/badge/运行于-Claude%20%7C%20ChatGPT%20%7C%20DeepSeek-0064F4.svg)](https://claude.com/claude-code)
 &nbsp;[![Full product](https://img.shields.io/badge/完整产品-academicats.com-0064F4.svg)](https://academicats.com)
 
 </div>
@@ -21,7 +21,7 @@
 ---
 
 > ### 🪶 这是 [**AcademiCats**](https://academicats.com) 的**开源轻量版**（正式版现处公测，免费试用）
-> 完整产品在 **[academicats.com](https://academicats.com)** —— 一个 AI 研究工作台，带你从*找文献*一路走到*读、写、自审*：覆盖广度堪比 Google Scholar、支持中文文献、可保存文献库、界面精致，还带多智能体审稿。本 skill 把这套工作流里的检索部分免费开源，自包含、可直接在你自己的 Claude 上运行。
+> 完整产品在 **[academicats.com](https://academicats.com)** —— 一个 AI 研究工作台，带你从*找文献*一路走到*读、写、自审*：覆盖广度堪比 Google Scholar、支持中文文献、可保存文献库、界面精致，还带多智能体审稿。本 skill 把这套工作流里的检索部分免费开源，自包含、可直接在你自己的 AI 上运行——Claude、ChatGPT 或 DeepSeek 皆可。
 
 ---
 
@@ -82,7 +82,7 @@ python -m pip install -r ~/.claude/skills/paper-search/scripts/requirements.txt 
 
 |  | 论文检索（本 skill） | [AcademiCats 完整产品 →](https://academicats.com) |
 |---|:---:|:---:|
-| ⚡ **速度** | 几分钟（在你的 Claude 上实时跑） | **数秒** —— 优化管线 + 缓存 |
+| ⚡ **速度** | 几分钟（在你的模型上实时跑） | **数秒** —— 优化管线 + 缓存 |
 | 真实论文、诚实精读 | ✅ | ✅ |
 | 学术数据库 | 5 个（免 key） | 14+，含 Google Scholar 与中文源 |
 | 文献库保存与历史 | — | ✅ |

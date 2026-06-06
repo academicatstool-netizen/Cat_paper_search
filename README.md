@@ -13,7 +13,7 @@
 <br>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-0064F4.svg)](LICENSE)
-&nbsp;[![Runs on Claude](https://img.shields.io/badge/runs%20on-Claude-0064F4.svg)](https://claude.com/claude-code)
+&nbsp;[![Runs on](https://img.shields.io/badge/runs%20on-Claude%20%7C%20ChatGPT%20%7C%20DeepSeek-0064F4.svg)](https://claude.com/claude-code)
 &nbsp;[![Full product](https://img.shields.io/badge/full%20product-academicats.com-0064F4.svg)](https://academicats.com)
 
 </div>
@@ -21,7 +21,7 @@
 ---
 
 > ### 🪶 This is the **lite, open-source edition** of [**AcademiCats**](https://academicats.com) — now in free open beta
-> The full product at **[academicats.com](https://academicats.com)** is an AI research workbench that takes you from *finding* papers all the way through *reading, writing, and self-review* — with Google Scholar breadth, Chinese-language sources, saved libraries, a polished UI, and a multi-agent reviewer. This skill is a free, self-contained slice of that workflow you can run on your own Claude.
+> The full product at **[academicats.com](https://academicats.com)** is an AI research workbench that takes you from *finding* papers all the way through *reading, writing, and self-review* — with Google Scholar breadth, Chinese-language sources, saved libraries, a polished UI, and a multi-agent reviewer. This skill is a free, self-contained slice of that workflow you can run on your own AI — Claude, ChatGPT, or DeepSeek.
 
 ---
 
@@ -82,7 +82,7 @@ Restart Claude Code, then just ask — *"find recent papers on …"*, *"summaris
 
 |  | Paper Search (this skill) | [AcademiCats full product →](https://academicats.com) |
 |---|:---:|:---:|
-| ⚡ **Speed** | minutes (runs live on your Claude) | **seconds** — tuned pipeline + caching |
+| ⚡ **Speed** | minutes (runs live on your model) | **seconds** — tuned pipeline + caching |
 | Real papers, honest reading | ✅ | ✅ |
 | Scholarly databases | 5 (key-free) | 14+ incl. Google Scholar & Chinese sources |
 | Saved libraries & history | — | ✅ |
