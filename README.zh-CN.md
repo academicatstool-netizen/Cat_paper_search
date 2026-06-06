@@ -56,20 +56,25 @@
 
 <br>
 
-## 🚀 60 秒上手
+## 🚀 开始使用 —— 按你的平台选一种
 
+按你常用的 AI 选一种，每种不到一分钟：
+
+**🖥️ Claude Code** —— 本地运行、自动触发（完整能力版）
 ```bash
-# 1. 安装到 Claude Code 的 skills 目录
 mkdir -p ~/.claude/skills
 git clone https://github.com/jy1529098645-gif/Cat_paper_search.git ~/.claude/skills/paper-search
-
-# 2. 装唯一的依赖（Python 3.8+，用于读 PDF）
-cd ~/.claude/skills/paper-search && python -m pip install -r scripts/requirements.txt
+python -m pip install -r ~/.claude/skills/paper-search/scripts/requirements.txt   # 用于读取 PDF
 ```
+重启 Claude Code，然后直接说 —— *"找几篇关于…的最新论文"*、*"总结这篇 arXiv 论文…"*
 
-重启 Claude Code 让它加载 skill。之后直接跟它说 —— *"找几篇关于…的最新论文"*、*"总结这篇 arXiv 论文…"* —— 它会**自动触发**，无需记任何命令。全程跑在你自己的 Claude 上，所有数据源免费、无需 API key。
+**🌐 Claude 网页 / 桌面版** —— 下载 **[`paper-search.skill`](paper-search.skill)**，在 **Settings → Capabilities → Skills** 里上传。（检索与读 PDF 的脚本会在 Claude 自带的代码沙箱里运行。）
 
-**用网页版 / 桌面版 Claude？** 下载 **[`paper-search.skill`](paper-search.skill)**，在 **Settings → Capabilities → Skills** 里上传，然后在任意对话里直接问即可。（检索与读 PDF 的脚本会在 Claude 自带的代码沙箱里运行。）
+**🤖 ChatGPT** —— 打开 **[`PORTABLE_PROMPT.md`](PORTABLE_PROMPT.md)**，贴进**自定义 GPT** 的 *Instructions*（或第一条消息），并**开启联网浏览**，然后提问。
+
+**💬 DeepSeek / 任意其他模型** —— 把 **[`PORTABLE_PROMPT.md`](PORTABLE_PROMPT.md)** 作为**系统提示**粘贴，并确保能联网，然后提问。
+
+> 在 ChatGPT/DeepSeek 上，检索改用联网浏览（而非 Python 脚本）—— 覆盖广度弱于 Claude 版，但每条结果都真实（没网时它会直说而不是编造）。想要完整能力，请用 Claude Code 那条路（或任何能跑 Python+联网的 agent，如 Cursor）。
 
 <br>
 
@@ -84,14 +89,6 @@ cd ~/.claude/skills/paper-search && python -m pip install -r scripts/requirement
 | 据文献写作、自审稿 | — | ✅ Synthesis Lab + Paper Review |
 | 精致的网页与移动端 | — | ✅ |
 
-## 🌐 在 ChatGPT、DeepSeek 或任意模型上使用
-
-本 skill 在 **Claude**（Claude Code 与 claude.ai）上会自动加载，并直接运行调用学术 API 的 Python 脚本——这是最准确的方式。在别处使用有两条路：
-
-1. **任何能跑 Python+联网的 agent**（Claude Code、Cursor 等）—— clone 仓库，`scripts/` 里的脚本开箱即用，这是完整保真版。
-2. **ChatGPT / DeepSeek 聊天**（无脚本运行环境）—— 用 **[`PORTABLE_PROMPT.md`](PORTABLE_PROMPT.md)** 里基于联网搜索的提示词。贴进 ChatGPT **自定义 GPT** 的 *Instructions*，或作为 DeepSeek 的**系统提示**，然后直接提问检索。
-   - ⚠️ **需要联网**——在 ChatGPT 里开启浏览。没有联网时模型无法查到真实论文；提示词会让它如实说明而不是编造结果。覆盖广度与排序弱于脚本版，但结果始终真实。
-
 ## 🐱 AcademiCats 技能家族
 
 三个开源 skill，串起一条完整的研究工作流——按需安装其一或全部：
@@ -104,11 +101,12 @@ cd ~/.claude/skills/paper-search && python -m pip install -r scripts/requirement
 
 ## 🙋 常见问题
 
+- **这些文件都是干嘛的？** 上面几种方式用其一即可——git clone（Claude Code）、`.skill` 文件（Claude 网页/桌面）、或 `PORTABLE_PROMPT.md`（ChatGPT/DeepSeek）。`SKILL.md`、`references/`、`scripts/` 是助手自动加载并运行的内部文件，无需手动打开。
 - **没触发？** 安装后重启 Claude Code，并把话说成一个任务 —— *"找几篇关于…的最新论文"*。
 - **某篇打不开？** 那是付费墙、没有免费副本——skill 会直说，而不是瞎编。换一篇，或直接粘 DOI / PDF 链接。
 - **有时为什么不到 5 个库？** Semantic Scholar 对无 key 流量限流。脚本会自动重试，其余 4 个库照样兜底——或申请一个免费 [S2 API key](https://www.semanticscholar.org/product/api)，`export S2_API_KEY=...` 后就能稳定带上它。
-- **用哪个模型？** 任何模型都能跑；用 Claude Sonnet 及以上效果最好。
-- **隐私 & 免费？** 全程跑在你自己的 Claude 上——无需账号、不向我们回传任何东西，检索只访问公开学术 API。
+- **用哪个模型？** 任何够强的模型都行——Claude Sonnet/Opus、GPT‑4o/o 系列、DeepSeek‑V3/R1 效果最好。
+- **隐私 & 免费？** 全程跑在你自己的 AI 上——无需账号、不向我们回传任何东西，检索只访问公开学术 API。
 
 <div align="center">
 <br>

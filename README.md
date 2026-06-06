@@ -56,20 +56,25 @@ Every title links straight to the paper; 🟢 means a free PDF you can read in f
 
 <br>
 
-## 🚀 Get started in 60 seconds
+## 🚀 Get started — pick your platform
 
+Pick whichever AI you use; each setup takes under a minute.
+
+**🖥️ Claude Code** — runs locally, triggers itself (full-power version)
 ```bash
-# 1. install into Claude Code's skills folder
 mkdir -p ~/.claude/skills
 git clone https://github.com/jy1529098645-gif/Cat_paper_search.git ~/.claude/skills/paper-search
-
-# 2. install the one dependency (Python 3.8+, for reading PDFs)
-cd ~/.claude/skills/paper-search && python -m pip install -r scripts/requirements.txt
+python -m pip install -r ~/.claude/skills/paper-search/scripts/requirements.txt   # for reading PDFs
 ```
+Restart Claude Code, then just ask — *"find recent papers on …"*, *"summarise this arXiv paper …"*
 
-Restart Claude Code so it loads the skill. From then on, just talk to Claude — *"find recent papers on …"*, *"summarise this arXiv paper …"* — and it triggers itself. Everything runs on your own Claude; all data sources are free and need no API keys.
+**🌐 Claude (web / desktop app)** — download **[`paper-search.skill`](paper-search.skill)**, then upload it under **Settings → Capabilities → Skills**. (Its search & PDF scripts run in Claude's built-in code sandbox.)
 
-**On Claude web or desktop instead?** Download **[`paper-search.skill`](paper-search.skill)** and upload it under **Settings → Capabilities → Skills** — then just ask in any chat. (Its search & PDF scripts run in Claude's built-in code sandbox.)
+**🤖 ChatGPT** — open **[`PORTABLE_PROMPT.md`](PORTABLE_PROMPT.md)**, paste it into a **Custom GPT**'s *Instructions* (or first message), and **turn on web browsing**. Then ask.
+
+**💬 DeepSeek / any other model** — paste **[`PORTABLE_PROMPT.md`](PORTABLE_PROMPT.md)** as the **system prompt**, with web access enabled. Then ask.
+
+> On ChatGPT/DeepSeek, search runs via web browsing instead of the Python scripts — coverage is lighter than the Claude version, but every result stays real (it says so rather than invent when offline). For the full-power experience, use the Claude Code path (or any agent that can run Python with internet, e.g. Cursor).
 
 <br>
 
@@ -84,14 +89,6 @@ Restart Claude Code so it loads the skill. From then on, just talk to Claude —
 | Write & self-review from your sources | — | ✅ Synthesis Lab + Paper Review |
 | Polished web & mobile app | — | ✅ |
 
-## 🌐 Use it on ChatGPT, DeepSeek, or any model
-
-This skill loads automatically on **Claude** (Claude Code & claude.ai), where it runs real Python scripts that query scholarly APIs directly — the most accurate path. There are two ways to run it elsewhere:
-
-1. **Any agent that can run Python with internet** (Claude Code, Cursor, …) — clone the repo and the scripts in `scripts/` work as-is. This is the full-fidelity version.
-2. **ChatGPT / DeepSeek chat** (no script runtime) — use the browsing-based prompt in **[`PORTABLE_PROMPT.md`](PORTABLE_PROMPT.md)**. Paste it into a ChatGPT **Custom GPT** (*Instructions*) or as a **system prompt** in DeepSeek, then ask your search.
-   - ⚠️ **Requires web access** — turn on browsing in ChatGPT. Without internet a model cannot look up real papers; the prompt tells it to say so rather than invent results. Coverage and ranking are weaker than the script version, but results stay real.
-
 ## 🐱 The AcademiCats skill family
 
 Three open skills that chain into one research workflow — install any or all:
@@ -104,11 +101,12 @@ Three open skills that chain into one research workflow — install any or all:
 
 ## 🙋 FAQ
 
+- **What are all these files?** Use just one path above — a git clone (Claude Code), the `.skill` file (Claude web/desktop), or `PORTABLE_PROMPT.md` (ChatGPT/DeepSeek). `SKILL.md`, `references/`, and `scripts/` are internals your assistant loads and runs for you — no need to open them.
 - **It didn't trigger?** Restart Claude Code after installing, and phrase your message as a task — *"find recent papers on …"*.
 - **A paper won't open?** It's paywalled with no free copy — the skill says so instead of guessing. Try another result, or paste a DOI / PDF link.
 - **Why fewer than 5 databases sometimes?** Semantic Scholar rate-limits key-free traffic. It auto-retries, and the other 4 databases carry the search — or grab a free [S2 API key](https://www.semanticscholar.org/product/api) and `export S2_API_KEY=...` to always include it.
-- **Which model?** Any model works; quality is best on Claude Sonnet or above.
-- **Private & free?** It runs on your own Claude — no account, nothing sent to us. Searches only hit public scholarly APIs.
+- **Which model?** Any strong model works — Claude Sonnet/Opus, GPT‑4o/o‑series, or DeepSeek‑V3/R1 give the best results.
+- **Private & free?** It runs on your own AI — no account, nothing sent to us. Searches only hit public scholarly APIs.
 
 <div align="center">
 <br>
