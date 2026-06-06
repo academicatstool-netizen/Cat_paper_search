@@ -44,6 +44,18 @@ report. Both must be grounded in **real data you actually retrieve via the web**
 **When:** the user wants to find papers / prior work / sources on a topic, or
 asks what the research says about something.
 
+## A0. Web-access precondition — CHECK THIS FIRST, before A1
+
+If you cannot browse the web in this session, do **NOT** search, and do **NOT**
+output any paper titles, authors, years, venues, DOIs, or citation counts — **in
+any format** (no list, no table, no prose, no "here are some well-known papers").
+Fabricated bibliographic data — especially DOIs — is worse than no answer. Reply
+only with: (1) that web access is required, (2) how to enable it (turn on
+browsing/search in ChatGPT/DeepSeek), and (3) that the full-fidelity Python
+script version (`scripts/`) is an alternative for agents that run Python with
+internet. The "search immediately" default in A1 applies **only once web access
+is confirmed.**
+
 ## A1. Get the topic (don't over-gate)
 
 - **Default = search immediately.** If the message already contains a topic
@@ -89,6 +101,15 @@ For each candidate capture: **title, authors, year, venue, citation count, a lin
 to the original, whether a free full-text PDF/HTML exists (and its URL), and the
 abstract**. Then:
 
+- **Citation counts** rarely show up in plain web-search snippets — they usually
+  need a structured source (the Semantic Scholar or OpenAlex JSON API). Fetch
+  them there when you can; if a count is genuinely unavailable, write
+  *cited by N/A* rather than guessing.
+- **If a source rate-limits you (HTTP 429) or is unreachable,** fall back to
+  another source in the list for the same field — don't drop the paper. Citation
+  counts in particular are interchangeable between Semantic Scholar and OpenAlex.
+- **When sources disagree on a field** (year, venue), prefer the publisher / DOI
+  record and don't silently average — note the discrepancy if it matters.
 - **De-duplicate** the same paper across sources (match on DOI / arXiv id / title
   + first author + year). Keep one merged record per paper, preferring the entry
   with a free full-text link.
@@ -116,7 +137,7 @@ Each result is **one entry**, with the **title as a clickable link to the
 original paper**, then a metadata line, and the free/paywalled marker:
 
 > **1. [Paper title](https://doi.org/…)**
-> Authors · Year · *Venue* · cited by N · via Source · 🟢 free full-text PDF available
+> Authors · Year · *Venue* · cited by N (or N/A) · via Source · 🟢 free full-text PDF available
 > > abstract snippet…
 > [📄 Open paper](url) · [⬇ PDF](pdf_url) · [🔗 DOI](https://doi.org/…)
 
@@ -168,8 +189,10 @@ arXiv id, or URL.
 
 ## B2. Produce the reading report (from accessed text ONLY)
 
-Build the report from the text you actually accessed. **Cite page numbers where
-the source shows them.** Render it as readable Markdown with these sections:
+Build the report from the text you actually accessed. **Cite the location where
+the source shows it — a page number for PDFs, or a section/table number for
+HTML full text (which has no pages).** Render it as readable Markdown with these
+sections:
 
 > ## 📖 Deep read: <Title>
 > *Authors · Year · Source* — relevance to your query: **NN/100**
@@ -191,8 +214,8 @@ the source shows them.** Render it as readable Markdown with these sections:
 > - finding 2
 > - finding 3
 >
-> **Evidence chain** *(claim → page)* — the most valuable part; lets the reader verify each claim against the source
-> - claim / result — p. X
+> **Evidence chain** *(claim → location)* — the most valuable part; lets the reader verify each claim against the source
+> - claim / result — p. X  *(or "Section 3.2" / "Table 2" when there are no page numbers)*
 > - claim / result — p. Y
 >
 > **Method notes** — bullet list.
@@ -203,11 +226,16 @@ the source shows them.** Render it as readable Markdown with these sections:
 
 **Rules:**
 - relevance score is an integer 0–100 (0 = unrelated, 100 = perfectly on-topic).
+  When the user named this exact paper (no prior search query to score against),
+  score 100 and read "relevance" as "match to what you asked for".
 - Use **ONLY** the text you accessed. Do **not** add facts, numbers, findings, or
-  claims from your own memory of this paper or its authors.
+  claims from your own memory of this paper or its authors. For dense numeric
+  tables, prefer the HTML/source view and quote cell values verbatim; if you must
+  rely on a fetch tool's summary, say the exact sub-numbers are best-effort.
 - If the accessed text doesn't contain what a section asks for, write
   **"Not covered in the analysed excerpt"** — never fabricate to fill it.
-- Keep claims conservative. Add page numbers wherever the source shows them.
+- Keep claims conservative. Add a page or section/table reference wherever the
+  source shows one.
 
 ## B3. Optional — claim extraction for writing hand-off
 

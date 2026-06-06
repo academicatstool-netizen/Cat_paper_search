@@ -74,7 +74,7 @@ python -m pip install -r ~/.claude/skills/paper-search/scripts/requirements.txt 
 
 **💬 DeepSeek / 任意其他模型** —— 把 **[`PORTABLE_PROMPT.md`](PORTABLE_PROMPT.md)** 作为**系统提示**粘贴，并确保能联网，然后提问。
 
-> 在 ChatGPT/DeepSeek 上，检索改用联网浏览（而非 Python 脚本）—— 覆盖广度弱于 Claude 版，但每条结果都真实（没网时它会直说而不是编造）。想要完整能力，请用 Claude Code 那条路（或任何能跑 Python+联网的 agent，如 Cursor）。
+> ⚠️ **在 ChatGPT/DeepSeek 上需联网** —— 检索改用联网浏览（而非 Python 脚本），记得开启浏览。覆盖广度弱于 Claude 版，但每条结果都真实（没网时它会直说而不是编造）。想要完整能力，请用 Claude Code 那条路（或任何能跑 Python+联网的 agent，如 Cursor）。
 
 <br>
 

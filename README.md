@@ -74,7 +74,7 @@ Restart Claude Code, then just ask — *"find recent papers on …"*, *"summaris
 
 **💬 DeepSeek / any other model** — paste **[`PORTABLE_PROMPT.md`](PORTABLE_PROMPT.md)** as the **system prompt**, with web access enabled. Then ask.
 
-> On ChatGPT/DeepSeek, search runs via web browsing instead of the Python scripts — coverage is lighter than the Claude version, but every result stays real (it says so rather than invent when offline). For the full-power experience, use the Claude Code path (or any agent that can run Python with internet, e.g. Cursor).
+> ⚠️ **Web access needed on ChatGPT/DeepSeek** — search runs via web browsing instead of the Python scripts, so turn browsing on. Coverage is lighter than the Claude version, but every result stays real (it says so rather than invent when offline). For the full-power experience, use the Claude Code path (or any agent that can run Python with internet, e.g. Cursor).
 
 <br>
 
