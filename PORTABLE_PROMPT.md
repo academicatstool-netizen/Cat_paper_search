@@ -93,54 +93,62 @@ is confirmed.**
   queries in **English** (translate/transliterate terms; keep proper nouns and
   domain terms like *gradient descent*, *p53* verbatim).
 
-## A3. Retrieve via web browsing (replaces `search_papers.py`)
+## A3. Retrieve — call the JSON APIs directly (replaces `search_papers.py`)
 
-**Pull results in BULK from the JSON APIs — do not scrape page-by-page.** Plain
-web search returns only ~10 hits per page and tempts you to stop early at a round
-number; the scholarly APIs return *many* real records in ONE request when you
-pass a count / page-size parameter. **To reliably reach the requested count
-(e.g. 40, 100, 200), fetch a result set at least as large as N** from one or more
-of these JSON endpoints, then merge (replace `<query>` with URL-encoded terms and
-`<N>` with the requested count):
+**This step decides whether you actually hit the count. Follow it literally — it
+is a required procedure, not optional advice.**
 
-- **OpenAlex** — `https://api.openalex.org/works?search=<query>&per-page=<N>` (per-page up to **200**; add `&filter=from_publication_date:2021-01-01` for a year floor; `&mailto=you@example.com` for the polite pool)
-- **Crossref** — `https://api.crossref.org/works?query=<query>&rows=<N>` (rows up to **1000**)
-- **Semantic Scholar** — `https://api.semanticscholar.org/graph/v1/paper/search?query=<query>&limit=<N>&fields=title,authors,year,venue,citationCount,openAccessPdf,externalIds` (limit up to **100**; paginate with `&offset=` for more)
-- **Europe PMC** — `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=<query>&format=json&pageSize=<N>` (pageSize up to **1000**)
-- **arXiv** — `http://export.arxiv.org/api/query?search_query=all:<query>&max_results=<N>`
-- **Google Scholar** (`scholar.google.com`) — last-resort supplement only (no API; scrape sparingly).
+❌ **Do NOT build the list from web-search result snippets.** Snippets return ~10
+hits at a time with patchy metadata (you end up writing "Authors N/A" /
+"Year N/A") — that is exactly why a model lazily stops at ~20–35 and then tells
+the user to "export via the API yourself." That is a failure.
+✅ **Open the scholarly JSON API URLs directly** in your browser/fetch tool. Each
+returns complete structured records — title, full author list, year, venue, DOI,
+citation count — that you read straight from the JSON.
 
-**Over-fetch, then trim.** Set `rows`/`per-page` to **at least ~1.5×N** on the
-first request, so that after de-duplication and dropping off-target hits you
-still have ≥ N papers. **If one source returns fewer than N, query another and
-merge** until you have N distinct papers — or until you've genuinely exhausted
-the real matches. If your retained set falls below N, issue another API call
-(next page via `offset`, larger `rows`, or another source) **before** presenting
-— never let a single page's length, or post-dedup shrinkage, silently become
-your final count.
+**Fetch in pages of ~50 and LOOP until you have N.** A single giant `rows=200`
+call gets truncated by the browser so you only parse the first few; **small pages
+of ~50 are read in full.** Open these URLs (URL-encode `<query>`; set the year
+filter to what the user asked):
 
-For each candidate capture: **title, authors, year, venue, citation count, a link
-to the original, whether a free full-text PDF/HTML exists (and its URL), and the
-abstract**. Then:
+1. **Crossref** — best for bulk + real citation counts. For page k = 0, 1, 2, …:
+   `https://api.crossref.org/works?query=<query>&filter=from-pub-date:2021-01-01&rows=50&offset=<k×50>&select=DOI,title,author,published,container-title,is-referenced-by-count&mailto=you@example.com`
+   Read **every** item in `message.items`; `is-referenced-by-count` is the
+   citation count. Increment `offset` by 50 and call again for the next page.
+2. **OpenAlex** — best for open-access PDF links. For page p = 1, 2, …:
+   `https://api.openalex.org/works?search=<query>&filter=from_publication_date:2021-01-01&per-page=50&page=<p>&mailto=you@example.com`
+   Read `results[]`; `open_access.oa_url` = free PDF URL, `cited_by_count` = citations.
+3. **Semantic Scholar / Europe PMC / arXiv** — top up or cross-fill if the above
+   don't reach N (`limit`+`offset` / `pageSize` / `max_results`+`start`).
 
-- **Citation counts** rarely show up in plain web-search snippets — they usually
-  need a structured source (the Semantic Scholar or OpenAlex JSON API). Fetch
-  them there when you can; if a count is genuinely unavailable, write
-  *cited by N/A* rather than guessing.
-- **If a source rate-limits you (HTTP 429) or is unreachable,** fall back to
-  another source in the list for the same field — don't drop the paper. Citation
-  counts in particular are interchangeable between Semantic Scholar and OpenAlex.
-- **When sources disagree on a field** (year, venue), prefer the publisher / DOI
-  record and don't silently average — note the discrepancy if it matters.
-- **De-duplicate** the same paper across sources (match on DOI / arXiv id / title
-  + first author + year). Keep one merged record per paper, preferring the entry
-  with a free full-text link.
-- **Re-rank by genuine research fit** to the user's *actual* question — not raw
-  keyword overlap. Lead with on-target papers; push clearly off-target ones to
-  the bottom or tag them `⚠ likely off-target`. Watch for ambiguous words (e.g.
-  "players" = video-game players vs. football players vs. game-theory players)
-  and downrank the wrong sense. Penalise missing abstracts and pure
-  tooling/technical-method papers when the user wants substantive findings.
+**Keep paging until your de-duplicated, on-topic list reaches N.** Pull roughly
+**1.5×N** records total so dedup + off-target removal still leaves ≥ N. After each
+page, if you have fewer than N, **fetch the NEXT page (or another source) — do not
+stop, and do not hand the job back to the user.** Plan on several tool calls for
+large N (e.g. ~5–6 pages for 200); that is expected and required.
+
+Then merge and clean:
+- **De-duplicate** across sources (DOI / arXiv id / title + first author + year);
+  keep one record each, preferring the one with a free full-text link.
+- **Drop off-target hits and non-papers**, then **re-rank by genuine research
+  fit** — not raw keyword overlap. Crossref's plain `query=` also returns book
+  front-matter (Foreword, Dedication, Glossary, "Section 1", Figure) and stubs —
+  drop those on sight; for a research-paper query, add
+  `&filter=…,type:journal-article` (and/or `type:proceedings-article`) to keep the
+  page clean. Watch ambiguous words (e.g. "players" = video-game vs. football vs.
+  game-theory) and downrank the wrong sense.
+- **Lead with Crossref** (most rate-limit-tolerant; covers bulk + citation
+  counts); use OpenAlex / Semantic Scholar as top-up, mainly for open-access PDF
+  links. **On HTTP 429 / unreachable,** switch to another source for the same
+  field — a 429 must **never reduce your final count**, and don't drop the paper
+  (citation counts are interchangeable across Crossref / Semantic Scholar /
+  OpenAlex).
+- **Metadata is mandatory.** Every API record carries authors + year + DOI, so
+  **never output "Authors N/A" or "Year N/A"** — if a field is blank you used a
+  snippet, not the JSON; re-fetch from the API. (If a real API record genuinely
+  has an empty author list — rare — label it *unattributed* / corporate author
+  rather than inventing names.) Only `cited by N/A` is allowed, and only when no
+  structured source returned a count this turn.
 
 ## A4. Present — fixed numbered-list format
 
@@ -178,6 +186,11 @@ Markers (keep them verbatim):
   tedious. Return fewer than N **only** when the topic genuinely has fewer real
   papers, and then state the true total found (e.g. *"only 12 real matches exist
   for this query"*). "Lazily returning 20" when 50 were asked for is a failure.
+  If you fall short of a large N because of a **browser/tool limit** (not a real
+  shortage — e.g. you could only complete a few API pages), say so plainly and
+  point to the full-fidelity Python script in `scripts/` (or running this on
+  Claude Code) for the complete export — don't disguise a tool limit as "that's
+  all that exists."
 - **Clickable links are mandatory.** Write every title, full-text, PDF, and DOI
   as a real Markdown link with the **full `https://` URL** — `[label](https://…)`
   — inline in your own text. Do **NOT** rely on the browsing tool's citation
@@ -199,6 +212,11 @@ Markers (keep them verbatim):
   line. If the user asked for 200 and you found 169, list all 169. Never stop
   early, never show only "highlights" or "the most representative", never
   collapse the rest into "… and more".
+- **Large N may use a compact tail.** For big requests (say N > 40), show the
+  first ~8 in the full format above, then list the rest one line each —
+  `N. [Title](https://…) — Authors · Year · 🔗 DOI` — so the reply stays usable.
+  This is about line length only: you must still list **all N** entries with
+  clickable links and real metadata, not drop any.
 - **One flat numbered list, 1 … N.** Do NOT reorganise into themes, categories,
   or sub-numbered buckets — that number is how the user refers back.
 - **Keep each entry's metadata + links intact.** You may add at most a one-line
