@@ -13,7 +13,9 @@
 <br>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-0064F4.svg)](LICENSE)
-&nbsp;[![Runs on](https://img.shields.io/badge/运行于-Claude%20%7C%20ChatGPT%20%7C%20DeepSeek-0064F4.svg)](https://claude.com/claude-code)
+&nbsp;[![Claude](https://img.shields.io/badge/Claude-0064F4.svg)](https://claude.com/claude-code)
+&nbsp;[![ChatGPT](https://img.shields.io/badge/ChatGPT-0064F4.svg)](https://chatgpt.com)
+&nbsp;[![DeepSeek](https://img.shields.io/badge/DeepSeek-0064F4.svg)](https://chat.deepseek.com)
 &nbsp;[![Full product](https://img.shields.io/badge/完整产品-academicats.com-0064F4.svg)](https://academicats.com)
 
 </div>
