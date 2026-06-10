@@ -45,16 +45,16 @@
 
 Say it in one line — the topic, plus any options inline:
 
-> *"Find 20 papers on CRISPR off-target effects since 2020."*
+> *"Find 200 papers on XR experience."*
 
 It runs right away — no forms, no back-and-forth — and returns a **numbered list of every result**, one scannable line each, so you can act on any of them by number. The format is fixed by the tool, identical no matter which model runs the skill:
 
-> ## 🔎 5 results for: CRISPR off-target effects
-> 1. **[Off-target effects in CRISPR/Cas9 gene editing](https://doi.org/10.3389/fbioe.2023.1143157)** — Congting Guo et al. · 2023 · cited 537 · 🟢 · [PDF](https://www.frontiersin.org/articles/10.3389/fbioe.2023.1143157/pdf)
-> 2. **[Latest Developed Strategies to Minimize Off-Target Effects in CRISPR-Cas Genome Editing](https://doi.org/10.3390/cells9071608)** — Naeem et al. · 2020 · cited 451 · 🟢 · [PDF](https://www.mdpi.com/2073-4409/9/7/1608/pdf)
-> 3. **[CRISPR/Cas Systems in Genome Editing: sgRNA Design & Off‑Target Evaluation](https://doi.org/10.1002/advs.201902312)** — Manghwar et al. · 2020 · cited 357 · 🟢 · [PDF](https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/advs.201902312)
-> 4. **[CRISPR/Cas13 effectors have differing off-target effects in eukaryotic cells](https://doi.org/10.1093/nar/gkac159)** — Ai et al. · 2022 · cited 151 · 🔒
-> 5. **[Beyond the promise: evaluating & mitigating off-target effects for safer therapeutics](https://doi.org/10.3389/fbioe.2023.1339189)** — Lopes et al. · 2024 · cited 62 · 🟢
+> ## 🔎 5 results for: XR experience
+> 1. **[PLUME: Record, Replay, Analyze and Share User Behavior in 6DoF XR Experiences](https://doi.org/10.1109/tvcg.2024.3372107)** — Charles Javerliat et al. · 2024 · cited 23 · 🟢 · [PDF](https://hal.science/hal-04488824v1/file/PlumeIEEEVR%281%29.pdf)
+> 2. **[A bibliometric analysis of immersive technology in museum exhibitions: exploring user experience](https://doi.org/10.3389/frvir.2023.1240562)** — Jingjing Li et al. · 2023 · cited 92 · 🟢 · [PDF](https://www.frontiersin.org/articles/10.3389/frvir.2023.1240562/pdf)
+> 3. **[Two sides of the same coin: accessibility practices and neurodivergent users' experience of extended reality](https://doi.org/10.1108/jet-03-2022-0025)** — Tamari Lukava et al. · 2022 · cited 40 · 🟢 · [PDF](https://discovery.ucl.ac.uk/10150777/1/Two%20sides%20of%20the%20same%20coin_revision_clean.pdf)
+> 4. **[A framework study on the use of immersive XR technologies in the cultural heritage domain](https://doi.org/10.1016/j.culher.2023.06.001)** — Chiara Innocente et al. · 2023 · cited 144 · 🔒
+> 5. **[Wayfinding in Virtual Reality Serious Game: An Exploratory Study in the Context of User Perceived Experiences](https://doi.org/10.3390/app11177822)** — Shafaq Irshad et al. · 2021 · cited 27 · 🟢 · [PDF](https://www.mdpi.com/2076-3417/11/17/7822/pdf?version=1630052587)
 
 Every title links straight to the paper; 🟢 means a free PDF you can read in full. Then just say **"deep-read #1"** — it opens that paper's PDF and reads it back to you with findings tied to page numbers, grounded entirely in the paper's own text.
 

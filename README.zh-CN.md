@@ -45,16 +45,16 @@
 
 一句话说清——主题，外加任何选项：
 
-> *"帮我找 20 篇 2020 年以后关于 CRISPR 脱靶效应的论文。"*
+> *"帮我找 200 篇关于 XR experience 的论文。"*
 
 它**立刻就跑**——不用填表、不用来回确认——返回一份**带编号的结果列表**，每篇一行、方便扫读，你可以直接用序号操作。格式由脚本固定生成，**换任何大模型来跑都完全一致**：
 
-> ## 🔎 共 5 条结果：CRISPR off-target effects
-> 1. **[Off-target effects in CRISPR/Cas9 gene editing](https://doi.org/10.3389/fbioe.2023.1143157)** — Congting Guo et al. · 2023 · 被引 537 · 🟢 · [PDF](https://www.frontiersin.org/articles/10.3389/fbioe.2023.1143157/pdf)
-> 2. **[Latest Developed Strategies to Minimize Off-Target Effects in CRISPR-Cas Genome Editing](https://doi.org/10.3390/cells9071608)** — Naeem et al. · 2020 · 被引 451 · 🟢 · [PDF](https://www.mdpi.com/2073-4409/9/7/1608/pdf)
-> 3. **[CRISPR/Cas Systems in Genome Editing: sgRNA Design & Off‑Target Evaluation](https://doi.org/10.1002/advs.201902312)** — Manghwar et al. · 2020 · 被引 357 · 🟢 · [PDF](https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/advs.201902312)
-> 4. **[CRISPR/Cas13 effectors have differing off-target effects in eukaryotic cells](https://doi.org/10.1093/nar/gkac159)** — Ai et al. · 2022 · 被引 151 · 🔒
-> 5. **[Beyond the promise: evaluating & mitigating off-target effects for safer therapeutics](https://doi.org/10.3389/fbioe.2023.1339189)** — Lopes et al. · 2024 · 被引 62 · 🟢
+> ## 🔎 共 5 条结果：XR experience
+> 1. **[PLUME: Record, Replay, Analyze and Share User Behavior in 6DoF XR Experiences](https://doi.org/10.1109/tvcg.2024.3372107)** — Charles Javerliat et al. · 2024 · 被引 23 · 🟢 · [PDF](https://hal.science/hal-04488824v1/file/PlumeIEEEVR%281%29.pdf)
+> 2. **[A bibliometric analysis of immersive technology in museum exhibitions: exploring user experience](https://doi.org/10.3389/frvir.2023.1240562)** — Jingjing Li et al. · 2023 · 被引 92 · 🟢 · [PDF](https://www.frontiersin.org/articles/10.3389/frvir.2023.1240562/pdf)
+> 3. **[Two sides of the same coin: accessibility practices and neurodivergent users' experience of extended reality](https://doi.org/10.1108/jet-03-2022-0025)** — Tamari Lukava et al. · 2022 · 被引 40 · 🟢 · [PDF](https://discovery.ucl.ac.uk/10150777/1/Two%20sides%20of%20the%20same%20coin_revision_clean.pdf)
+> 4. **[A framework study on the use of immersive XR technologies in the cultural heritage domain](https://doi.org/10.1016/j.culher.2023.06.001)** — Chiara Innocente et al. · 2023 · 被引 144 · 🔒
+> 5. **[Wayfinding in Virtual Reality Serious Game: An Exploratory Study in the Context of User Perceived Experiences](https://doi.org/10.3390/app11177822)** — Shafaq Irshad et al. · 2021 · 被引 27 · 🟢 · [PDF](https://www.mdpi.com/2076-3417/11/17/7822/pdf?version=1630052587)
 
 标题直接链接原文；🟢 表示有可读全文的免费 PDF。然后你只要说 **"深读 #1"**——它就打开那篇的 PDF，逐条列出关键发现并标注出处页码，且完全基于论文原文。
 
