@@ -65,7 +65,7 @@ Pick whichever AI you use; each setup takes under a minute.
 **🖥️ Claude Code** — runs locally, triggers itself (full-power version)
 ```bash
 mkdir -p ~/.claude/skills
-git clone https://github.com/jy1529098645-gif/Cat_paper_search.git ~/.claude/skills/paper-search
+git clone https://github.com/academicatstool-netizen/Cat_paper_search.git ~/.claude/skills/paper-search
 python -m pip install -r ~/.claude/skills/paper-search/scripts/requirements.txt   # for reading PDFs
 ```
 Restart Claude Code, then just ask — *"find recent papers on …"*, *"summarise this arXiv paper …"*
@@ -96,8 +96,8 @@ Restart Claude Code, then just ask — *"find recent papers on …"*, *"summaris
 Three open skills that chain into one research workflow — install any or all:
 
 - 🔍 **Paper Search** *(you are here)* — find & read papers
-- ✍️ [Synthesis Lab](https://github.com/jy1529098645-gif/Cat_synthesis_lab) — write grounded papers from your sources
-- 🧪 [Paper Review](https://github.com/jy1529098645-gif/Cat_paper_review) — peer-review your own draft
+- ✍️ [Synthesis Lab](https://github.com/academicatstool-netizen/Cat_synthesis_lab) — write grounded papers from your sources
+- 🧪 [Paper Review](https://github.com/academicatstool-netizen/Cat_paper_review) — peer-review your own draft
 
 **Install all three at once** — clone any one repo, then run `bash install.sh`.
 

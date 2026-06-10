@@ -12,7 +12,7 @@ install_skill () {   # $1 = repo name   $2 = skill folder
     git -C "$DIR/$2" pull --ff-only --quiet || true
   else
     echo "↓ installing $2"
-    git clone --depth 1 --quiet "https://github.com/jy1529098645-gif/$1.git" "$DIR/$2"
+    git clone --depth 1 --quiet "https://github.com/academicatstool-netizen/$1.git" "$DIR/$2"
   fi
 }
 

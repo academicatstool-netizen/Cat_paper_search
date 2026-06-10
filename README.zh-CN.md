@@ -65,7 +65,7 @@
 **🖥️ Claude Code** —— 本地运行、自动触发（完整能力版）
 ```bash
 mkdir -p ~/.claude/skills
-git clone https://github.com/jy1529098645-gif/Cat_paper_search.git ~/.claude/skills/paper-search
+git clone https://github.com/academicatstool-netizen/Cat_paper_search.git ~/.claude/skills/paper-search
 python -m pip install -r ~/.claude/skills/paper-search/scripts/requirements.txt   # 用于读取 PDF
 ```
 重启 Claude Code，然后直接说 —— *"找几篇关于…的最新论文"*、*"总结这篇 arXiv 论文…"*
@@ -96,8 +96,8 @@ python -m pip install -r ~/.claude/skills/paper-search/scripts/requirements.txt 
 三个开源 skill，串起一条完整的研究工作流——按需安装其一或全部：
 
 - 🔍 **论文检索** *（你在这里）* —— 找文献、读文献
-- ✍️ [文献写作台](https://github.com/jy1529098645-gif/Cat_synthesis_lab) —— 用你的文献写出有据可查的成稿
-- 🧪 [模拟同行评审](https://github.com/jy1529098645-gif/Cat_paper_review) —— 对你自己的草稿做同行评审
+- ✍️ [文献写作台](https://github.com/academicatstool-netizen/Cat_synthesis_lab) —— 用你的文献写出有据可查的成稿
+- 🧪 [模拟同行评审](https://github.com/academicatstool-netizen/Cat_paper_review) —— 对你自己的草稿做同行评审
 
 **一次装齐三个** —— clone 任意一个仓库后运行 `bash install.sh`。
 
