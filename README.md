@@ -14,8 +14,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-0064F4.svg)](LICENSE)
 &nbsp;[![Claude](https://img.shields.io/badge/Claude-0064F4.svg)](https://claude.com/claude-code)
-&nbsp;[![ChatGPT](https://img.shields.io/badge/ChatGPT-0064F4.svg)](https://chatgpt.com)
-&nbsp;[![DeepSeek](https://img.shields.io/badge/DeepSeek-0064F4.svg)](https://chat.deepseek.com)
+&nbsp;[![Codex](https://img.shields.io/badge/Codex-0064F4.svg)](https://github.com/openai/codex)
 &nbsp;[![Full product](https://img.shields.io/badge/full%20product-academicats.com-0064F4.svg)](https://academicats.com)
 
 </div>
@@ -23,7 +22,7 @@
 ---
 
 > ### 🪶 This is the **lite, open-source edition** of [**AcademiCats**](https://academicats.com) — now in free open beta
-> The full product at **[academicats.com](https://academicats.com)** is an AI research workbench that takes you from *finding* papers all the way through *reading, writing, and self-review* — with Google Scholar breadth, Chinese-language sources, saved libraries, a polished UI, and a multi-agent reviewer. This skill is a free, self-contained slice of that workflow you can run on your own AI — Claude, ChatGPT, or DeepSeek.
+> The full product at **[academicats.com](https://academicats.com)** is an AI research workbench that takes you from *finding* papers all the way through *reading, writing, and self-review* — with Google Scholar breadth, Chinese-language sources, saved libraries, a polished UI, and a multi-agent reviewer. This skill is a free, self-contained slice of that workflow you can run on your own AI — Claude or Codex.
 
 ---
 
@@ -76,11 +75,11 @@ Restart Claude Code, then just ask — *"find recent papers on …"*, *"summaris
 
 **🌐 Claude (web / desktop app)** — download **[`paper-search.skill`](paper-search.skill)**, then upload it under **Settings → Capabilities → Skills**. (Its search & PDF scripts run in Claude's built-in code sandbox.)
 
-**🤖 ChatGPT** — open **[`PORTABLE_PROMPT.md`](PORTABLE_PROMPT.md)**, paste it into a **Custom GPT**'s *Instructions* (or first message), and **turn on web browsing**. Then ask.
+**💻 Codex / any coding agent** — clone the repo into your project and let the agent run the Python scripts directly — the same full-power path as Claude Code (real APIs, deep-read PDFs), no browsing needed.
 
-**💬 DeepSeek / any other model** — paste **[`PORTABLE_PROMPT.md`](PORTABLE_PROMPT.md)** as the **system prompt**, with web access enabled. Then ask.
+**💬 Any other model** — paste **[`PORTABLE_PROMPT.md`](PORTABLE_PROMPT.md)** as the **system prompt**, with web access enabled. Then ask.
 
-> ⚠️ **Web access needed on ChatGPT/DeepSeek** — search runs via web browsing instead of the Python scripts, so turn browsing on. Coverage is lighter than the Claude version, but every result stays real (it says so rather than invent when offline). For the full-power experience, use the Claude Code path (or any agent that can run Python with internet, e.g. Cursor).
+> ⚠️ **Browsing models need web access** — on a browsing-only model (no Python), search runs via web browsing instead of the scripts, so turn browsing on. Coverage is lighter, but every result stays real (it says so rather than invent when offline). For the full-power experience use **Claude Code or Codex** (or any agent that can run Python with internet, e.g. Cursor).
 
 <br>
 
@@ -108,11 +107,11 @@ Four open skills that chain into one research workflow — install any or all:
 
 ## 🙋 FAQ
 
-- **What are all these files?** Use just one path above — a git clone (Claude Code), the `.skill` file (Claude web/desktop), or `PORTABLE_PROMPT.md` (ChatGPT/DeepSeek). `SKILL.md`, `references/`, and `scripts/` are internals your assistant loads and runs for you — no need to open them.
+- **What are all these files?** Use just one path above — a git clone (Claude Code), the `.skill` file (Claude web/desktop), or `PORTABLE_PROMPT.md` (any other model). `SKILL.md`, `references/`, and `scripts/` are internals your assistant loads and runs for you — no need to open them.
 - **It didn't trigger?** Restart Claude Code after installing, and phrase your message as a task — *"find recent papers on …"*.
 - **A paper won't open?** It's paywalled with no free copy — the skill says so instead of guessing. Try another result, or paste a DOI / PDF link.
 - **Why fewer than 5 databases sometimes?** Semantic Scholar rate-limits key-free traffic. It auto-retries, and the other 4 databases carry the search — or grab a free [S2 API key](https://www.semanticscholar.org/product/api) and `export S2_API_KEY=...` to always include it.
-- **Which model?** Any strong model works — Claude Sonnet/Opus, GPT‑4o/o‑series, or DeepSeek‑V3/R1 give the best results.
+- **Which model or agent?** Claude (Sonnet/Opus) via Claude Code or Codex give the best results — any other capable model can run the portable prompt.
 - **Private & free?** It runs on your own AI — no account, nothing sent to us. Searches only hit public scholarly APIs.
 
 <div align="center">
