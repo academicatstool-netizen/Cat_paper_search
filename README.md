@@ -61,6 +61,16 @@ Every title links straight to the paper; 🟢 means a free PDF you can read in f
 
 <br>
 
+## 🔬 Why you can trust it
+
+A research tool is only as useful as your confidence the results are real — so this repo ships proof, not just claims:
+
+- **[Generic AI vs. Paper Search →](examples/)** — the same query, showing how a generic chatbot fabricates a plausible-but-fake paper (with a dead DOI) versus the real, verifiable records this skill returns. Every DOI is checked to resolve.
+- **[How ranking & realness work →](METHODOLOGY.md)** — how results are ordered by genuine research fit, and exactly what "real, never fabricated" guarantees.
+- **[Known limitations →](LIMITATIONS.md)** — the failure cases we know about, written down. Better you trust the boundaries than discover them.
+
+<br>
+
 ## 🚀 Get started — pick your platform
 
 Pick whichever AI you use; each setup takes under a minute.
